@@ -1,16 +1,18 @@
 site_name: Lilly Kitchen
 site_description: Project documentation and mockups for Lilly Kitchen.
-site_url: ""
+site_url: https://lilly-kitchen.shoug-tech.com
 docs_dir: docs
 theme:
   name: mkdocs
 
 nav:
   - Home: index.md
+  - Live Site: live-site.md
+  - Mockup Reference: mockup.html
 
 markdown_extensions:
   - admonition
   - tables
 
 extra:
-  notes: "Placeholder MkDocs configuration for the project documentation."
+  notes: "MkDocs is used for project documentation and reference material only."

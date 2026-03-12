@@ -39,8 +39,20 @@ Copy `.env.example` to `.env.local` and fill in the values when Supabase is read
 Current placeholders:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
+
+## Deployment Direction
+
+The actual Lilly Kitchen product should be deployed as a Next.js app on Vercel.
+
+- Production site: `https://lilly-kitchen.shoug-tech.com/`
+- MkDocs is only for documentation and reference material
+- Supabase should be configured with:
+  - `Site URL`: `https://lilly-kitchen.shoug-tech.com`
+  - `Redirect URLs` including:
+    - `http://localhost:3000/**`
+    - `https://lilly-kitchen.shoug-tech.com/**`
 
 ## Recipe Content
 
