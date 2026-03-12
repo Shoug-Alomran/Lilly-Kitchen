@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lilly Kitchen — Recipe Platform Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF8F5;
+    --white: #FFFFFF;
+    --linen: #F2EDE6;
+    --espresso: #1C1410;
+    --warm-gray: #7A6E66;
+    --terracotta: #C4714A;
+    --blush: #F0D9CC;
+    --sand: #E5DDD5;
+    --sage: #7A9B76;
+    --shadow: 0 2px 24px rgba(28,20,16,0.07);
+    --shadow-lg: 0 8px 40px rgba(28,20,16,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--espresso);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,248,245,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--sand);
+    padding: 0 60px;
+    height: 68px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400; letter-spacing: 0.02em;
+    color: var(--espresso);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px; font-weight: 400; letter-spacing: 0.04em;
+    color: var(--warm-gray); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--espresso); }
+  .nav-links a.active { color: var(--terracotta); }
+  .nav-right {
+    display: flex; align-items: center; gap: 20px;
+  }
+  .nav-icon {
+    width: 20px; height: 20px; color: var(--warm-gray);
+    cursor: pointer; transition: color 0.2s;
+  }
+  .nav-icon:hover { color: var(--terracotta); }
+  .nav-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--blush); border: 2px solid var(--sand);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--terracotta); cursor: pointer;
+  }
+
+  /* ─── PAGE SECTION LABELS ─── */
+  .page-label {
+    background: var(--espresso); color: white;
+    padding: 10px 60px; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .page-label::before {
+    content: ''; width: 24px; height: 1px; background: var(--terracotta);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    height: 92vh; position: relative; overflow: hidden;
+    margin-top: 68px;
+  }
+  .hero-img {
+    width: 100%; height: 100%; object-fit: cover;
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 20%, #CD853F 50%, #8B6914 80%, #5C4012 100%);
+    position: relative;
+  }
+  .hero-img::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 40%, rgba(180,110,50,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 60%, rgba(100,60,20,0.5) 0%, transparent 50%);
+  }
+  /* Food art overlay */
+  .hero-food-art {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-plate {
+    width: 380px; height: 380px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #F5DEB3, #D2B48C 40%, #A0522D 100%);
+    box-shadow: 0 20px 80px rgba(0,0,0,0.4), inset 0 -10px 40px rgba(0,0,0,0.2);
+    position: relative; overflow: hidden;
+  }
+  .hero-plate::after {
+    content: '';
+    position: absolute; top: 15%; left: 15%; right: 15%; bottom: 15%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 30%, #8B0000 0%, #6B0000 30%, #4a0000 70%);
+    box-shadow: inset 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .hero-garnish {
+    position: absolute; top: 10%; right: 15%;
+    width: 120px; height: 80px;
+    background: radial-gradient(ellipse, #2d5a1b, #1a3a0e);
+    border-radius: 40% 60% 50% 70%;
+    opacity: 0.8;
+    transform: rotate(-20deg);
+  }
+  .hero-garnish-2 {
+    position: absolute; bottom: 20%; left: 18%;
+    width: 80px; height: 50px;
+    background: radial-gradient(ellipse, #3a6b22, #224010);
+    border-radius: 60% 40% 70% 30%;
+    opacity: 0.7;
+    transform: rotate(15deg);
+  }
+  .hero-gradient {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(15,8,4,0.85) 0%,
+      rgba(15,8,4,0.5) 30%,
+      transparent 60%
+    );
+  }
+  .hero-content {
+    position: absolute; bottom: 10%; left: 8%;
+    max-width: 640px;
+    animation: heroFadeUp 1s ease both;
+  }
+  @keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--terracotta);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 30px; height: 1px; background: var(--terracotta);
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 68px; font-weight: 300; line-height: 1.05;
+    color: white; margin-bottom: 18px;
+  }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 20px; font-weight: 300;
+    color: rgba(255,255,255,0.75); margin-bottom: 32px;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--terracotta); color: white;
+    padding: 14px 32px; border-radius: 8px; border: none;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    letter-spacing: 0.02em; cursor: pointer; text-decoration: none;
+    transition: all 0.2s; box-shadow: 0 4px 20px rgba(196,113,74,0.4);
+  }
+  .btn-primary:hover { background: #b5633e; transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--espresso);
+    padding: 12px 24px; border-radius: 8px;
+    border: 1.5px solid var(--sand);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400;
+    cursor: pointer; text-decoration: none; transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--espresso); }
+  .hero-scroll {
+    position: absolute; bottom: 30px; right: 8%;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: rgba(255,255,255,0.5); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.5; } 50% { opacity: 1; }
+  }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 100px 80px; }
+  .section-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 48px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px; font-weight: 400;
+  }
+  .section-link {
+    font-size: 13px; color: var(--terracotta);
+    text-decoration: none; letter-spacing: 0.04em;
+    display: flex; align-items: center; gap: 6px;
+    transition: gap 0.2s;
+  }
+  .section-link:hover { gap: 10px; }
+
+  /* ─── INTRO STRIP ─── */
+  .intro-strip {
+    padding: 80px 80px;
+    background: var(--white);
+    text-align: center;
+    border-top: 1px solid var(--sand);
+    border-bottom: 1px solid var(--sand);
+  }
+  .intro-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 30px; font-weight: 300;
+    color: var(--espresso); max-width: 700px; margin: 0 auto 28px;
+    line-height: 1.5;
+  }
+  .intro-divider {
+    width: 60px; height: 1px; background: var(--terracotta);
+    margin: 0 auto 28px;
+  }
+  .intro-author {
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+  }
+  .author-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--blush);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--terracotta);
+    border: 2px solid var(--sand);
+  }
+  .author-info { text-align: left; }
+  .author-name { font-size: 15px; font-weight: 500; color: var(--espresso); }
+  .author-sub { font-size: 12px; color: var(--warm-gray); }
+
+  /* ─── FEATURED ─── */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 24px; height: 560px;
+  }
+  .featured-main {
+    grid-row: 1 / 3;
+    border-radius: 16px; overflow: hidden;
+    position: relative; cursor: pointer;
+    box-shadow: var(--shadow);
+  }
+  .featured-main:hover .card-img { transform: scale(1.03); }
+  .card-img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.5s ease;
+  }
+  /* Styled food backgrounds for cards */
+  .food-bg-1 {
+    background: linear-gradient(145deg, #8B3A3A 0%, #C4614A 30%, #E8A87C 60%, #8B6040 100%);
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .food-bg-1::before {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #F5DEB3, #D2691E);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+  .food-bg-2 {
+    background: linear-gradient(135deg, #2C4A1E, #4a7a32, #7FB069);
+  }
+  .food-bg-3 {
+    background: linear-gradient(135deg, #6B3A2A, #A0522D, #CD853F);
+  }
+  .food-bg-4 {
+    background: linear-gradient(135deg, #1a1a2e, #4a3728, #8B6040);
+  }
+  .food-bg-5 {
+    background: linear-gradient(135deg, #8B2252, #C4426A, #E8879C);
+  }
+  .food-bg-6 {
+    background: linear-gradient(135deg, #2C3E1A, #4E6B2E, #A8C37E);
+  }
+  .food-bg-ramadan {
+    background: linear-gradient(145deg, #1a0a2e, #3d1a6b, #7B2FBE, #C4A645);
+  }
+
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(15,8,4,0.8) 0%, transparent 55%);
+  }
+  .card-content {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 28px;
+  }
+  .card-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
+    color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 99px;
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 400; color: white; line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .card-title-sm {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400; color: white; line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .card-meta {
+    font-size: 12px; color: rgba(255,255,255,0.65);
+    display: flex; gap: 14px; align-items: center;
+  }
+  .save-btn {
+    position: absolute; top: 18px; right: 18px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s; color: white; font-size: 16px;
+  }
+  .save-btn:hover { background: var(--terracotta); border-color: var(--terracotta); }
+  .featured-side {
+    border-radius: 16px; overflow: hidden;
+    position: relative; cursor: pointer;
+    box-shadow: var(--shadow);
+  }
+  .featured-side:hover .food-bg-2,
+  .featured-side:hover .food-bg-3 { filter: brightness(1.05); }
+
+  /* ─── CATEGORIES ─── */
+  .categories-section { background: var(--linen); }
+  .category-scroll {
+    display: flex; gap: 12px; overflow-x: auto;
+    padding-bottom: 32px; margin-bottom: 48px;
+    scrollbar-width: none;
+  }
+  .category-scroll::-webkit-scrollbar { display: none; }
+  .cat-pill {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px; border-radius: 99px;
+    background: white; border: 1.5px solid var(--sand);
+    font-size: 13px; font-weight: 400; white-space: nowrap;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .cat-pill:hover, .cat-pill.active {
+    background: var(--espresso); color: white; border-color: var(--espresso);
+  }
+  .cat-pill.active { background: var(--terracotta); border-color: var(--terracotta); }
+  .cat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .cat-card {
+    border-radius: 14px; overflow: hidden;
+    aspect-ratio: 3/4; position: relative; cursor: pointer;
+    box-shadow: var(--shadow);
+  }
+  .cat-card:hover .cat-img { transform: scale(1.05); }
+  .cat-img {
+    width: 100%; height: 100%;
+    transition: transform 0.5s ease;
+  }
+  .cat-label-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(15,8,4,0.75) 0%, transparent 50%);
+    display: flex; align-items: flex-end; padding: 20px;
+  }
+  .cat-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400; color: white;
+  }
+
+  /* ─── RECIPE GRID ─── */
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .recipe-card {
+    background: var(--white); border-radius: 14px;
+    overflow: hidden; box-shadow: var(--shadow);
+    cursor: pointer; transition: all 0.3s;
+  }
+  .recipe-card:hover {
+    transform: translateY(-4px); box-shadow: var(--shadow-lg);
+  }
+  .recipe-card:hover .recipe-card-img-inner { transform: scale(1.04); }
+  .recipe-card-img {
+    aspect-ratio: 4/3; overflow: hidden; position: relative;
+  }
+  .recipe-card-img-inner {
+    width: 100%; height: 100%; transition: transform 0.5s ease;
+  }
+  .recipe-card-save {
+    position: absolute; top: 14px; right: 14px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,0.9); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; cursor: pointer; color: var(--warm-gray);
+    transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .recipe-card-save:hover { color: var(--terracotta); }
+  .recipe-card-body { padding: 20px; }
+  .recipe-tag {
+    display: inline-block;
+    background: var(--linen); color: var(--terracotta);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 99px;
+    margin-bottom: 10px;
+  }
+  .recipe-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400; margin-bottom: 10px;
+    line-height: 1.3; color: var(--espresso);
+  }
+  .recipe-info {
+    display: flex; gap: 14px;
+    font-size: 12px; color: var(--warm-gray);
+  }
+
+  /* ─── SEASONAL / RAMADAN ─── */
+  .seasonal-section {
+    background: var(--espresso);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; padding: 0; overflow: hidden;
+  }
+  .seasonal-text {
+    padding: 100px 80px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .seasonal-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--terracotta); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .seasonal-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--terracotta); }
+  .seasonal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px; font-weight: 300; color: white;
+    line-height: 1.1; margin-bottom: 24px;
+  }
+  .seasonal-desc {
+    font-size: 15px; line-height: 1.8; color: rgba(255,255,255,0.6);
+    margin-bottom: 40px; max-width: 420px;
+  }
+  .seasonal-images {
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px;
+  }
+  .seasonal-img { width: 100%; height: 100%; min-height: 240px; }
+  .btn-light {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: white;
+    padding: 14px 32px; border-radius: 8px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400;
+    cursor: pointer; transition: all 0.2s; text-decoration: none;
+    width: fit-content;
+  }
+  .btn-light:hover { border-color: white; background: rgba(255,255,255,0.05); }
+
+  /* ─── INSTAGRAM ─── */
+  .instagram-section { background: var(--white); text-align: center; }
+  .ig-header { margin-bottom: 40px; }
+  .ig-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+    margin-bottom: 40px;
+  }
+  .ig-tile {
+    aspect-ratio: 1; border-radius: 4px;
+    overflow: hidden; cursor: pointer; position: relative;
+  }
+  .ig-tile:hover .ig-overlay { opacity: 1; }
+  .ig-tile-bg { width: 100%; height: 100%; }
+  .ig-overlay {
+    position: absolute; inset: 0;
+    background: rgba(196,113,74,0.5);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s;
+    font-size: 20px; color: white;
+  }
+  .ig-handle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400; margin-bottom: 8px;
+  }
+  .ig-sub { font-size: 13px; color: var(--warm-gray); margin-bottom: 24px; }
+  .btn-ig {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--espresso); color: white;
+    padding: 12px 28px; border-radius: 8px; border: none;
+    font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none;
+  }
+
+  /* ─── NEWSLETTER ─── */
+  .newsletter {
+    background: var(--linen); text-align: center;
+    padding: 100px 80px;
+  }
+  .newsletter-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 42px; font-weight: 300;
+    margin-bottom: 12px;
+  }
+  .newsletter-sub {
+    font-size: 15px; color: var(--warm-gray); margin-bottom: 36px;
+  }
+  .newsletter-form {
+    display: flex; gap: 12px; max-width: 480px; margin: 0 auto 16px;
+  }
+  .newsletter-input {
+    flex: 1; padding: 14px 20px; border-radius: 8px;
+    border: 1.5px solid var(--sand); background: white;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--espresso); outline: none;
+  }
+  .newsletter-input:focus { border-color: var(--terracotta); }
+  .newsletter-fine { font-size: 12px; color: var(--warm-gray); }
+
+  /* ─── RECIPE DETAIL PAGE ─── */
+  .recipe-detail-hero {
+    width: 100%; height: 70vh;
+    position: relative; overflow: hidden; margin-top: 68px;
+  }
+  .recipe-detail-hero-img {
+    width: 100%; height: 100%;
+  }
+  .recipe-detail-hero-gradient {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(to top, var(--cream), transparent);
+  }
+  .recipe-detail-body {
+    max-width: 900px; margin: 0 auto; padding: 0 40px 100px;
+  }
+  .recipe-detail-header { padding: 48px 0 36px; }
+  .recipe-detail-cats {
+    display: flex; gap: 8px; margin-bottom: 20px;
+  }
+  .recipe-detail-cat {
+    background: var(--linen); color: var(--terracotta);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 5px 12px; border-radius: 99px;
+  }
+  .recipe-detail-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px; font-weight: 300; line-height: 1.1;
+    margin-bottom: 18px;
+  }
+  .recipe-detail-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 20px; font-weight: 300;
+    color: var(--warm-gray); line-height: 1.6; margin-bottom: 24px;
+  }
+  .recipe-detail-byline {
+    font-size: 13px; color: var(--warm-gray);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .byline-dot { color: var(--sand); }
+  .metadata-bar {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--sand);
+    border-radius: 12px; overflow: hidden;
+    margin: 36px 0; box-shadow: var(--shadow);
+  }
+  .meta-cell {
+    background: var(--white); padding: 20px 24px;
+    text-align: center;
+  }
+  .meta-icon { font-size: 20px; margin-bottom: 6px; }
+  .meta-label { font-size: 11px; color: var(--warm-gray); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .meta-value { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; }
+  .action-row {
+    display: flex; gap: 12px; margin-bottom: 48px;
+  }
+  .btn-save {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--terracotta); color: white;
+    padding: 13px 24px; border-radius: 8px; border: none;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .recipe-content-grid {
+    display: grid; grid-template-columns: 320px 1fr;
+    gap: 64px; align-items: start;
+  }
+  .ingredients-sidebar {
+    background: var(--linen); border-radius: 16px;
+    padding: 32px; position: sticky; top: 88px;
+  }
+  .ingr-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 400; margin-bottom: 8px;
+  }
+  .servings-adjuster {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 24px; padding-bottom: 24px;
+    border-bottom: 1px solid var(--sand);
+  }
+  .adj-btn {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1.5px solid var(--sand); background: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 16px; color: var(--espresso);
+  }
+  .adj-num { font-size: 18px; font-weight: 500; }
+  .adj-label { font-size: 12px; color: var(--warm-gray); }
+  .ingr-group-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--warm-gray); margin-bottom: 12px; margin-top: 20px;
+  }
+  .ingr-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-bottom: 10px; font-size: 14px; line-height: 1.5;
+  }
+  .ingr-check {
+    width: 16px; height: 16px; border-radius: 4px;
+    border: 1.5px solid var(--sand); flex-shrink: 0; margin-top: 2px;
+    cursor: pointer; background: white;
+  }
+  .instructions-col {}
+  .instr-step {
+    display: flex; gap: 24px; margin-bottom: 40px;
+    padding-bottom: 40px; border-bottom: 1px solid var(--sand);
+  }
+  .instr-step:last-of-type { border-bottom: none; }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px; font-weight: 300; color: var(--blush);
+    line-height: 1; flex-shrink: 0; min-width: 48px;
+  }
+  .step-text { font-size: 15px; line-height: 1.85; color: var(--espresso); padding-top: 8px; }
+  .tips-box {
+    background: var(--linen); border-left: 3px solid var(--terracotta);
+    border-radius: 0 12px 12px 0; padding: 28px 32px; margin-top: 48px;
+  }
+  .tips-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 500; margin-bottom: 12px;
+    color: var(--terracotta);
+  }
+  .tips-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 17px; line-height: 1.8;
+    color: var(--warm-gray);
+  }
+
+  /* ─── SAVED DASHBOARD ─── */
+  .dashboard-header {
+    padding: 60px 80px 40px;
+    border-bottom: 1px solid var(--sand);
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .dashboard-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 400;
+  }
+  .stats-strip {
+    font-size: 13px; color: var(--warm-gray);
+    margin-top: 8px; display: flex; gap: 20px;
+  }
+  .stat-item { display: flex; align-items: center; gap: 6px; }
+  .stat-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--sand); }
+  .folders-scroll {
+    display: flex; gap: 20px; overflow-x: auto;
+    padding: 0 80px 0; padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+  .folders-scroll::-webkit-scrollbar { display: none; }
+  .folder-card {
+    flex-shrink: 0; width: 200px; cursor: pointer;
+    border-radius: 14px; overflow: hidden;
+    background: var(--white); box-shadow: var(--shadow);
+    transition: all 0.3s;
+  }
+  .folder-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .folder-mosaic {
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr; height: 140px;
+  }
+  .folder-mosaic-cell { width: 100%; height: 100%; }
+  .folder-info { padding: 14px 16px; }
+  .folder-name { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
+  .folder-count { font-size: 12px; color: var(--warm-gray); }
+  .new-folder-card {
+    flex-shrink: 0; width: 200px; height: 200px;
+    border-radius: 14px; cursor: pointer;
+    border: 2px dashed var(--sand); background: var(--white);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; color: var(--warm-gray); font-size: 13px;
+    transition: all 0.2s;
+  }
+  .new-folder-card:hover { border-color: var(--terracotta); color: var(--terracotta); }
+  .new-folder-icon { font-size: 28px; }
+
+  /* ─── RECIPES PAGE ─── */
+  .recipes-page-header {
+    padding: 60px 80px 0;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .recipes-page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px; font-weight: 300;
+  }
+  .sort-select {
+    padding: 10px 16px; border-radius: 8px;
+    border: 1.5px solid var(--sand); background: white;
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    color: var(--espresso); outline: none; cursor: pointer;
+  }
+  .search-bar-wrap {
+    padding: 32px 80px;
+  }
+  .search-bar {
+    display: flex; align-items: center; gap: 14px;
+    background: white; border: 1.5px solid var(--sand);
+    border-radius: 99px; padding: 14px 24px;
+    max-width: 660px; margin: 0 auto;
+    box-shadow: var(--shadow); transition: border-color 0.2s;
+  }
+  .search-bar:focus-within { border-color: var(--terracotta); }
+  .search-icon { font-size: 18px; color: var(--warm-gray); }
+  .search-input {
+    flex: 1; border: none; outline: none; background: none;
+    font-family: 'DM Sans', sans-serif; font-size: 15px;
+    color: var(--espresso);
+  }
+  .filter-bar {
+    display: flex; gap: 10px; padding: 0 80px 32px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-pill {
+    padding: 9px 18px; border-radius: 99px;
+    border: 1.5px solid var(--sand); background: white;
+    font-size: 13px; cursor: pointer; white-space: nowrap;
+    transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+  }
+  .filter-pill.active {
+    background: var(--terracotta); border-color: var(--terracotta); color: white;
+  }
+  .filter-pill:hover:not(.active) { border-color: var(--espresso); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--espresso); color: rgba(255,255,255,0.6);
+    padding: 60px 80px 40px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px; margin-bottom: 60px;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; color: white; margin-bottom: 16px;
+  }
+  .footer-desc { font-size: 14px; line-height: 1.7; max-width: 280px; }
+  .footer-col-title {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: white; margin-bottom: 20px; font-weight: 500;
+  }
+  .footer-link {
+    display: block; font-size: 14px; color: rgba(255,255,255,0.55);
+    text-decoration: none; margin-bottom: 10px; transition: color 0.2s;
+  }
+  .footer-link:hover { color: white; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 32px; display: flex; justify-content: space-between;
+    font-size: 12px; color: rgba(255,255,255,0.35);
+  }
+
+  /* ─── PAGE DIVIDERS ─── */
+  .page-break {
+    margin: 80px 0 0; padding: 0;
+    border-top: 3px solid var(--espresso);
+  }
+
+  /* ─── MOBILE NOTE ─── */
+  .mobile-note {
+    background: var(--blush); padding: 16px 80px;
+    font-size: 12px; color: var(--terracotta);
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid rgba(196,113,74,0.2);
+  }
+
+  /* Utility */
+  .text-center { text-align: center; }
+  .mt-8 { margin-top: 8px; }
+  .relative { position: relative; }
+
+  /* ─── CRESCENT MOON DECORATION ─── */
+  .crescent {
+    position: absolute; top: 30px; right: 40px;
+    width: 60px; height: 60px; color: rgba(255,215,0,0.4);
+    font-size: 50px; line-height: 1;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 1: HOMEPAGE
+═══════════════════════════════════════════════ -->
+<div class="page-label">Page 1 — Homepage</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Lilly Kitchen</a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#">Recipes</a></li>
+    <li><a href="#">Categories</a></li>
+    <li><a href="#">Collections</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Saved</a></li>
+  </ul>
+  <div class="nav-right">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <div class="nav-avatar">L</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="food-bg-1" style="position:absolute;inset:0;">
+    <div style="position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F5DEB3,#C4714A 50%,#8B3A1A);top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 30px 80px rgba(0,0,0,0.5),inset 0 -15px 40px rgba(0,0,0,0.3);"></div>
+    <div style="position:absolute;top:20%;right:20%;width:100px;height:65px;background:radial-gradient(ellipse,#2d5a1b,#1a3a0e);border-radius:40% 60% 50% 70%;transform:rotate(-20deg);opacity:0.8;"></div>
+    <div style="position:absolute;bottom:25%;left:20%;width:70px;height:45px;background:radial-gradient(ellipse,#3a6b22,#224010);border-radius:60% 40% 70% 30%;transform:rotate(15deg);opacity:0.7;"></div>
+    <div style="position:absolute;top:30%;left:25%;width:6px;height:6px;border-radius:50%;background:#C41E3A;box-shadow:20px 30px 0 #C41E3A,40px 10px 0 #C41E3A,-10px 40px 0 #C41E3A;opacity:0.9;"></div>
+  </div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">New Recipe</div>
+    <h1 class="hero-title">Slow-Roasted Lamb<br>with Pomegranate<br>Glaze</h1>
+    <p class="hero-subtitle">A celebration dish made for the table.</p>
+    <a href="#" class="btn-primary">View Recipe →</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</div>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip">
+  <p class="intro-quote">"Simple ingredients. Honest cooking.<br>Recipes made to be shared."</p>
+  <div class="intro-divider"></div>
+  <div class="intro-author">
+    <div class="author-avatar">L</div>
+    <div class="author-info">
+      <div class="author-name">By Lilly</div>
+      <div class="author-sub">Dubai-based food creator · @lillykitchen</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED RECIPES -->
+<section>
+  <div class="section-header">
+    <h2 class="section-title">Featured This Week</h2>
+    <a href="#" class="section-link">View All →</a>
+  </div>
+  <div class="featured-grid">
+    <!-- Main large card -->
+    <div class="featured-main">
+      <div class="food-bg-1" style="height:100%;">
+        <div style="position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#F5DEB3,#C4714A 50%,#8B3A1A);top:50%;left:50%;transform:translate(-50%,-55%);box-shadow:0 20px 60px rgba(0,0,0,0.4);"></div>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="save-btn">♡</div>
+      <div class="card-content">
+        <span class="card-tag">Mains · Middle Eastern</span>
+        <div class="card-title">Slow-Roasted Lamb<br>with Pomegranate Glaze</div>
+        <div class="card-meta">
+          <span>⏱ 2 hr 15 min</span>
+          <span>🍽 Serves 6</span>
+          <span>⭐ 4.9</span>
+        </div>
+      </div>
+    </div>
+    <!-- Top right card -->
+    <div class="featured-side">
+      <div class="food-bg-2" style="height:100%;display:flex;align-items:center;justify-content:center;">
+        <div style="width:160px;height:100px;background:radial-gradient(ellipse at 40% 30%,#F5DEB3,#A0522D);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,0.3);transform:rotate(-3deg);"></div>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="save-btn">♡</div>
+      <div class="card-content">
+        <span class="card-tag">Salads</span>
+        <div class="card-title-sm">Fattoush with Sumac Dressing</div>
+        <div class="card-meta"><span>⏱ 20 min</span><span>🍽 4</span></div>
+      </div>
+    </div>
+    <!-- Bottom right card -->
+    <div class="featured-side">
+      <div class="food-bg-5" style="height:100%;display:flex;align-items:center;justify-content:center;">
+        <div style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#FFD4E8,#C4426A);box-shadow:0 10px 30px rgba(0,0,0,0.3);"></div>
+      </div>
+      <div class="card-overlay" style="background:linear-gradient(to top, rgba(60,10,25,0.8) 0%, transparent 55%);"></div>
+      <div class="save-btn">♡</div>
+      <div class="card-content">
+        <span class="card-tag">Desserts</span>
+        <div class="card-title-sm">Rosewater Basbousa Cake</div>
+        <div class="card-meta"><span>⏱ 45 min</span><span>🍽 8</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories-section">
+  <div class="section-header">
+    <h2 class="section-title">What are you craving?</h2>
+  </div>
+  <div class="category-scroll">
+    <div class="cat-pill active">🍽 All</div>
+    <div class="cat-pill">🥗 Salads</div>
+    <div class="cat-pill">🍳 Breakfast</div>
+    <div class="cat-pill">🍲 Soups</div>
+    <div class="cat-pill">🍰 Desserts</div>
+    <div class="cat-pill">🥩 Mains</div>
+    <div class="cat-pill">🫕 Stews</div>
+    <div class="cat-pill">🍞 Breads</div>
+    <div class="cat-pill">🥤 Drinks</div>
+    <div class="cat-pill">🌙 Ramadan</div>
+    <div class="cat-pill">🎂 Celebration</div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="food-bg-5" style="height:100%;display:flex;align-items:center;justify-content:center;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:36px;">🍰</div>
+      </div>
+      <div class="cat-label-overlay"><span class="cat-name">Desserts</span></div>
+    </div>
+    <div class="cat-card">
+      <div class="food-bg-2" style="height:100%;display:flex;align-items:center;justify-content:center;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:36px;">🥗</div>
+      </div>
+      <div class="cat-label-overlay"><span class="cat-name">Salads</span></div>
+    </div>
+    <div class="cat-card">
+      <div class="food-bg-3" style="height:100%;display:flex;align-items:center;justify-content:center;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:36px;">🥩</div>
+      </div>
+      <div class="cat-label-overlay"><span class="cat-name">Mains</span></div>
+    </div>
+    <div class="cat-card">
+      <div class="food-bg-4" style="height:100%;display:flex;align-items:center;justify-content:center;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:36px;">☕</div>
+      </div>
+      <div class="cat-label-overlay"><span class="cat-name">Breakfast</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWEST RECIPES -->
+<section style="background: var(--white);">
+  <div class="section-header">
+    <h2 class="section-title">Just Added</h2>
+    <a href="#" class="section-link">View All →</a>
+  </div>
+  <div class="recipe-grid">
+    <!-- Card 1 -->
+    <div class="recipe-card">
+      <div class="recipe-card-img">
+        <div class="recipe-card-img-inner food-bg-6" style="display:flex;align-items:center;justify-content:center;">
+          <div style="width:110px;height:70px;background:radial-gradient(ellipse,#F5DEB3,#8B8000);border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,0.3);transform:rotate(2deg);"></div>
+        </div>
+        <div class="recipe-card-save">♡</div>
+      </div>
+      <div class="recipe-card-body">
+        <span class="recipe-tag">Mains</span>
+        <div class="recipe-name">Za'atar Flatbread with Olive Oil & Herbs</div>
+        <div class="recipe-info"><span>⏱ 25 min</span><span>🍽 4 servings</span><span>🟢 Easy</span></div>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="recipe-card">
+      <div class="recipe-card-img">
+        <div class="recipe-card-img-inner food-bg-5" style="display:flex;align-items:center;justify-content:center;">
+          <div style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFB6C1,#DB7093);box-shadow:0 8px 24px rgba(0,0,0,0.3);"></div>
+        </div>
+        <div class="recipe-card-save" style="color:var(--terracotta);">♥</div>
+      </div>
+      <div class="recipe-card-body">
+        <span class="recipe-tag">Desserts</span>
+        <div class="recipe-name">Kunafa with Ashta Cream & Orange Blossom</div>
+        <div class="recipe-info"><span>⏱ 55 min</span><span>🍽 8 servings</span><span>🟡 Medium</span></div>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="recipe-card">
+      <div class="recipe-card-img">
+        <div class="recipe-card-img-inner food-bg-4" style="display:flex;align-items:center;justify-content:center;">
+          <div style="width:100px;height:140px;background:radial-gradient(ellipse,#D4A017,#8B6914);border-radius:50% 50% 45% 45%;box-shadow:0 8px 24px rgba(0,0,0,0.4);"></div>
+        </div>
+        <div class="recipe-card-save">♡</div>
+      </div>
+      <div class="recipe-card-body">
+        <span class="recipe-tag">Breakfast</span>
+        <div class="recipe-name">Shakshuka with Feta & Fresh Herbs</div>
+        <div class="recipe-info"><span>⏱ 30 min</span><span>🍽 2 servings</span><span>🟢 Easy</span></div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:48px;">
+    <a href="#" class="btn-ghost">Load More Recipes</a>
+  </div>
+</section>
+
+<!-- SEASONAL / RAMADAN -->
+<div class="seasonal-section">
+  <div class="seasonal-text" style="position:relative;">
+    <div class="crescent">🌙</div>
+    <div class="seasonal-eyebrow">Seasonal Collection</div>
+    <h2 class="seasonal-title">Ramadan<br>Table</h2>
+    <p class="seasonal-desc">Thirty days of meaningful meals. From predawn suhoor to iftar spreads that gather the family — every recipe is made with intention.</p>
+    <a href="#" class="btn-light">Explore Collection →</a>
+  </div>
+  <div class="seasonal-images">
+    <div class="seasonal-img food-bg-ramadan" style="display:flex;align-items:center;justify-content:center;">
+      <div style="font-size:48px;opacity:0.6;">🕌</div>
+    </div>
+    <div class="seasonal-img food-bg-3" style="display:flex;align-items:center;justify-content:center;">
+      <div style="width:80px;height:100px;background:radial-gradient(ellipse,#F5DEB3,#8B4513);border-radius:50%;box-shadow:0 8px 20px rgba(0,0,0,0.3);"></div>
+    </div>
+    <div class="seasonal-img food-bg-4" style="display:flex;align-items:center;justify-content:center;">
+      <div style="font-size:44px;opacity:0.5;">🫖</div>
+    </div>
+    <div class="seasonal-img food-bg-5" style="display:flex;align-items:center;justify-content:center;">
+      <div style="width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,#F5DEB3,#C4426A);box-shadow:0 8px 20px rgba(0,0,0,0.3);"></div>
+    </div>
+  </div>
+</div>
+
+<!-- INSTAGRAM -->
+<section class="instagram-section">
+  <div class="ig-header">
+    <h2 class="section-title">Follow Along on Instagram</h2>
+  </div>
+  <div class="ig-grid">
+    <div class="ig-tile"><div class="ig-tile-bg food-bg-1" style="height:100%;"></div><div class="ig-overlay">♥ 1.2k</div></div>
+    <div class="ig-tile"><div class="ig-tile-bg food-bg-2" style="height:100%;"></div><div class="ig-overlay">♥ 980</div></div>
+    <div class="ig-tile"><div class="ig-tile-bg food-bg-3" style="height:100%;"></div><div class="ig-overlay">♥ 2.1k</div></div>
+    <div class="ig-tile"><div class="ig-tile-bg food-bg-5" style="height:100%;"></div><div class="ig-overlay">♥ 1.8k</div></div>
+    <div class="ig-tile"><div class="ig-tile-bg food-bg-4" style="height:100%;"></div><div class="ig-overlay">♥ 750</div></div>
+    <div class="ig-tile"><div class="ig-tile-bg food-bg-6" style="height:100%;"></div><div class="ig-overlay">♥ 1.4k</div></div>
+  </div>
+  <div class="ig-handle">@lillykitchen</div>
+  <div class="ig-sub">128k followers · New recipes every week</div>
+  <a href="#" class="btn-ig">Follow on Instagram ↗</a>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <h2 class="newsletter-title">New recipes, every week.</h2>
+  <p class="newsletter-sub">Join 14,000 home cooks who get Lilly's recipes in their inbox.</p>
+  <div class="newsletter-form">
+    <input class="newsletter-input" type="email" placeholder="your@email.com">
+    <button class="btn-primary">Subscribe</button>
+  </div>
+  <p class="newsletter-fine">No spam. Unsubscribe anytime.</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">Lilly Kitchen</div>
+      <p class="footer-desc">Simple ingredients. Honest cooking. Recipes made to be shared — from my kitchen to yours.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Explore</div>
+      <a href="#" class="footer-link">All Recipes</a>
+      <a href="#" class="footer-link">Categories</a>
+      <a href="#" class="footer-link">Collections</a>
+      <a href="#" class="footer-link">Ramadan Table</a>
+    </div>
+    <div>
+      <div class="footer-col-title">Account</div>
+      <a href="#" class="footer-link">Sign Up</a>
+      <a href="#" class="footer-link">Log In</a>
+      <a href="#" class="footer-link">Saved Recipes</a>
+      <a href="#" class="footer-link">My Folders</a>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <a href="#" class="footer-link">Instagram</a>
+      <a href="#" class="footer-link">About Lilly</a>
+      <a href="#" class="footer-link">Newsletter</a>
+      <a href="#" class="footer-link">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Lilly Kitchen. All rights reserved.</span>
+    <span>Privacy · Terms</span>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 2: RECIPES INDEX
+═══════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="page-label">Page 2 — Recipes Index</div>
+
+<div style="background:var(--cream);padding-top:68px;">
+  <div class="recipes-page-header">
+    <div>
+      <h1 class="recipes-page-title">All Recipes</h1>
+      <p style="font-size:14px;color:var(--warm-gray);margin-top:8px;">148 recipes · From Lilly's kitchen</p>
+    </div>
+    <select class="sort-select">
+      <option>Sort: Latest</option>
+      <option>Most Saved</option>
+      <option>A–Z</option>
+      <option>Quickest First</option>
+    </select>
+  </div>
+
+  <div class="search-bar-wrap">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" type="text" placeholder="Search recipes, ingredients, occasions...">
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-pill active">🍽 All Recipes</div>
+    <div class="filter-pill">🥗 Salads</div>
+    <div class="filter-pill">🍳 Breakfast</div>
+    <div class="filter-pill">🍲 Soups</div>
+    <div class="filter-pill">🍰 Desserts</div>
+    <div class="filter-pill">🥩 Mains</div>
+    <div class="filter-pill">⏱ Under 30 min</div>
+    <div class="filter-pill">🌿 Vegetarian</div>
+    <div class="filter-pill">🌙 Ramadan</div>
+    <div class="filter-pill active" style="background:var(--espresso);border-color:var(--espresso);color:white;">🎂 Celebration ✕</div>
+  </div>
+
+  <div style="padding: 0 80px 100px;">
+    <div class="recipe-grid">
+      <div class="recipe-card">
+        <div class="recipe-card-img">
+          <div class="recipe-card-img-inner food-bg-1" style="display:flex;align-items:center;justify-content:center;">
+            <div style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F5DEB3,#C4714A 50%,#8B3A1A);box-shadow:0 8px 24px rgba(0,0,0,0.3);"></div>
+          </div>
+          <div class="recipe-card-save">♡</div>
+        </div>
+        <div class="recipe-card-body">
+          <span class="recipe-tag">Mains</span>
+          <div class="recipe-name">Slow-Roasted Lamb with Pomegranate</div>
+          <div class="recipe-info"><span>⏱ 2h 15m</span><span>🍽 6</span><span>⭐ 4.9</span></div>
+        </div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-card-img">
+          <div class="recipe-card-img-inner food-bg-5" style="display:flex;align-items:center;justify-content:center;">
+            <div style="width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,#FFD4E8,#C4426A);box-shadow:0 8px 24px rgba(0,0,0,0.3);"></div>
+          </div>
+          <div class="recipe-card-save" style="color:var(--terracotta);">♥</div>
+        </div>
+        <div class="recipe-card-body">
+          <span class="recipe-tag">Desserts</span>
+          <div class="recipe-name">Kunafa with Ashta Cream & Orange Blossom</div>
+          <div class="recipe-info"><span>⏱ 55m</span><span>🍽 8</span><span>⭐ 5.0</span></div>
+        </div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-card-img">
+          <div class="recipe-card-img-inner food-bg-2" style="display:flex;align-items:center;justify-content:center;">
+            <div style="width:140px;height:90px;background:radial-gradient(ellipse,#F5F5DC,#9ACD32);border-radius:50%;box-shadow:0 8px 20px rgba(0,0,0,0.3);"></div>
+          </div>
+          <div class="recipe-card-save">♡</div>
+        </div>
+        <div class="recipe-card-body">
+          <span class="recipe-tag">Salads</span>
+          <div class="recipe-name">Fattoush with Sumac Vinaigrette</div>
+          <div class="recipe-info"><span>⏱ 20m</span><span>🍽 4</span><span>🟢 Easy</span></div>
+        </div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-card-img">
+          <div class="recipe-card-img-inner food-bg-4" style="display:flex;align-items:center;justify-content:center;">
+            <div style="font-size:60px;opacity:0.6;">🍳</div>
+          </div>
+          <div class="recipe-card-save">♡</div>
+        </div>
+        <div class="recipe-card-body">
+          <span class="recipe-tag">Breakfast</span>
+          <div class="recipe-name">Shakshuka with Feta & Fresh Herbs</div>
+          <div class="recipe-info"><span>⏱ 30m</span><span>🍽 2</span><span>🟢 Easy</span></div>
+        </div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-card-img">
+          <div class="recipe-card-img-inner food-bg-3" style="display:flex;align-items:center;justify-content:center;">
+            <div style="width:100px;height:130px;background:radial-gradient(ellipse,#D4A017,#8B4513);border-radius:50% 50% 45% 45%;box-shadow:0 8px 20px rgba(0,0,0,0.3);"></div>
+          </div>
+          <div class="recipe-card-save">♡</div>
+        </div>
+        <div class="recipe-card-body">
+          <span class="recipe-tag">Desserts</span>
+          <div class="recipe-name">Rosewater Basbousa with Almonds</div>
+          <div class="recipe-info"><span>⏱ 45m</span><span>🍽 12</span><span>🟢 Easy</span></div>
+        </div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-card-img">
+          <div class="recipe-card-img-inner food-bg-6" style="display:flex;align-items:center;justify-content:center;">
+            <div style="font-size:60px;opacity:0.6;">🫕</div>
+          </div>
+          <div class="recipe-card-save">♡</div>
+        </div>
+        <div class="recipe-card-body">
+          <span class="recipe-tag">Soups</span>
+          <div class="recipe-name">Harira Soup with Lemon & Coriander</div>
+          <div class="recipe-info"><span>⏱ 1h 20m</span><span>🍽 6</span><span>🟡 Medium</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:48px;">
+      <a href="#" class="btn-ghost">Load More · 142 remaining</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 3: RECIPE DETAIL
+═══════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="page-label">Page 3 — Recipe Detail Page</div>
+
+<div style="background:var(--cream);">
+  <!-- Hero -->
+  <div class="recipe-detail-hero">
+    <div class="food-bg-1" style="height:100%;display:flex;align-items:center;justify-content:center;position:relative;">
+      <div style="width:400px;height:400px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F5DEB3,#C4714A 40%,#8B3A1A 80%);box-shadow:0 40px 100px rgba(0,0,0,0.5),inset 0 -20px 60px rgba(0,0,0,0.2);"></div>
+      <div style="position:absolute;top:15%;right:20%;width:140px;height:90px;background:radial-gradient(ellipse,#2d5a1b,#1a3a0e);border-radius:40% 60% 50% 70%;transform:rotate(-20deg);opacity:0.8;"></div>
+      <div style="position:absolute;bottom:20%;left:15%;width:90px;height:60px;background:radial-gradient(ellipse,#3a6b22,#224010);border-radius:60% 40% 70% 30%;transform:rotate(15deg);opacity:0.7;"></div>
+      <div style="position:absolute;top:35%;left:30%;width:8px;height:8px;border-radius:50%;background:#C41E3A;box-shadow:25px 40px 0 #C41E3A,55px 15px 0 #C41E3A,-15px 55px 0 #C41E3A,40px -10px 0 #C41E3A;opacity:0.9;"></div>
+    </div>
+    <div class="recipe-detail-hero-gradient"></div>
+  </div>
+
+  <div class="recipe-detail-body">
+    <!-- Header -->
+    <div class="recipe-detail-header">
+      <div class="recipe-detail-cats">
+        <span class="recipe-detail-cat">Mains</span>
+        <span class="recipe-detail-cat">Middle Eastern</span>
+        <span class="recipe-detail-cat">Celebration</span>
+      </div>
+      <h1 class="recipe-detail-title">Slow-Roasted Lamb<br>with Pomegranate Glaze</h1>
+      <p class="recipe-detail-intro">"A deeply fragrant dish built for slow afternoons and full tables — the kind of recipe that fills the house with warmth before it even reaches the plate."</p>
+      <div class="recipe-detail-byline">
+        <span>By Lilly</span>
+        <span class="byline-dot">·</span>
+        <span>March 2025</span>
+        <span class="byline-dot">·</span>
+        <span>⭐ 4.9 (214 reviews)</span>
+      </div>
+    </div>
+
+    <!-- Metadata bar -->
+    <div class="metadata-bar">
+      <div class="meta-cell">
+        <div class="meta-icon">⏱</div>
+        <div class="meta-label">Prep</div>
+        <div class="meta-value">15 min</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-icon">🔥</div>
+        <div class="meta-label">Cook</div>
+        <div class="meta-value">2 hr</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-icon">🍽</div>
+        <div class="meta-label">Serves</div>
+        <div class="meta-value">6</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-icon">📊</div>
+        <div class="meta-label">Difficulty</div>
+        <div class="meta-value">Medium</div>
+      </div>
+    </div>
+
+    <!-- Action row -->
+    <div class="action-row">
+      <button class="btn-save">🔖 Save Recipe</button>
+      <a href="#" class="btn-ghost">🖨 Print</a>
+      <a href="#" class="btn-ghost">📤 Share</a>
+    </div>
+
+    <!-- Two-column content -->
+    <div class="recipe-content-grid">
+      <!-- Sidebar: Ingredients -->
+      <div class="ingredients-sidebar">
+        <div class="ingr-title">Ingredients</div>
+        <div class="servings-adjuster">
+          <div class="adj-btn">−</div>
+          <div>
+            <div class="adj-num">6</div>
+            <div class="adj-label">servings</div>
+          </div>
+          <div class="adj-btn">+</div>
+        </div>
+
+        <div class="ingr-group-title">For the lamb</div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>1.8 kg bone-in lamb shoulder</span></div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>4 tbsp olive oil</span></div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>6 garlic cloves, minced</span></div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>2 tsp ground cumin</span></div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>1 tsp cinnamon</span></div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>Salt & black pepper</span></div>
+
+        <div class="ingr-group-title">For the glaze</div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>200ml pomegranate molasses</span></div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>2 tbsp honey</span></div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>1 tbsp lemon juice</span></div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>½ tsp allspice</span></div>
+
+        <div class="ingr-group-title">To serve</div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>Fresh pomegranate seeds</span></div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>Handful of fresh mint</span></div>
+        <div class="ingr-item"><div class="ingr-check"></div><span>Toasted pine nuts</span></div>
+
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--sand);">
+          <a href="#" style="font-size:13px;color:var(--terracotta);text-decoration:none;">📋 Copy ingredients list</a>
+        </div>
+      </div>
+
+      <!-- Main: Instructions -->
+      <div class="instructions-col">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin-bottom:36px;">Method</div>
+
+        <div class="instr-step">
+          <div class="step-num">01</div>
+          <div class="step-text">
+            <strong>Marinate the lamb.</strong> Score the lamb shoulder deeply all over with a sharp knife. Mix together the olive oil, minced garlic, cumin, cinnamon, salt and pepper into a thick paste. Rub generously into every cut and over the surface. Cover and refrigerate for at least 4 hours, or ideally overnight.
+          </div>
+        </div>
+
+        <div class="instr-step">
+          <div class="step-num">02</div>
+          <div class="step-text">
+            <strong>Slow roast.</strong> Preheat your oven to 160°C (fan). Place the lamb in a deep roasting dish, add 200ml of water or stock to the bottom, cover tightly with foil and roast for 2 hours until tender enough to pull apart with a fork.
+          </div>
+        </div>
+
+        <div class="instr-step">
+          <div class="step-num">03</div>
+          <div class="step-text">
+            <strong>Make the glaze.</strong> While the lamb roasts, combine pomegranate molasses, honey, lemon juice and allspice in a small saucepan. Simmer over medium heat for 5–6 minutes until slightly thickened and glossy.
+          </div>
+        </div>
+
+        <div class="instr-step">
+          <div class="step-num">04</div>
+          <div class="step-text">
+            <strong>Glaze and finish.</strong> Remove the foil, increase oven to 200°C. Brush the lamb liberally with the pomegranate glaze. Return uncovered for 20 minutes until caramelised and deeply coloured. Rest for 15 minutes before serving.
+          </div>
+        </div>
+
+        <div class="tips-box">
+          <div class="tips-title">💡 Lilly's Notes</div>
+          <p class="tips-text">"The secret is not to rush the resting. Those 15 minutes after the oven are where all the magic happens — the juices redistribute and every bite becomes something else entirely. Serve it on a big platter with warm flatbread and don't be shy with the pomegranate seeds."</p>
+        </div>
+
+        <!-- Instagram embed placeholder -->
+        <div style="margin-top:56px;padding:32px;background:var(--white);border-radius:16px;border:1px solid var(--sand);max-width:480px;box-shadow:var(--shadow);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--blush);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;color:var(--terracotta);font-size:16px;">L</div>
+            <div>
+              <div style="font-size:14px;font-weight:500;">lillykitchen</div>
+              <div style="font-size:12px;color:var(--warm-gray);">Original Instagram Post</div>
+            </div>
+            <div style="margin-left:auto;font-size:22px;color:var(--terracotta);">📷</div>
+          </div>
+          <div style="aspect-ratio:1;border-radius:10px;background:var(--food-bg-1);overflow:hidden;" class="food-bg-1"></div>
+          <p style="margin-top:16px;font-size:14px;line-height:1.7;color:var(--espresso);">
+            This lamb has been on my mind since Eid last year. Finally perfected the glaze — pomegranate molasses is everything 🍖✨ Recipe now live on Lilly Kitchen! Link in bio.
+          </p>
+          <div style="margin-top:12px;font-size:12px;color:var(--warm-gray);">View on Instagram ↗</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related -->
+    <div style="margin-top:80px;padding-top:60px;border-top:1px solid var(--sand);">
+      <div class="section-header">
+        <h2 class="section-title">You Might Also Like</h2>
+      </div>
+      <div class="recipe-grid">
+        <div class="recipe-card">
+          <div class="recipe-card-img">
+            <div class="recipe-card-img-inner food-bg-3" style="display:flex;align-items:center;justify-content:center;">
+              <div style="font-size:50px;opacity:0.6;">🍖</div>
+            </div>
+            <div class="recipe-card-save">♡</div>
+          </div>
+          <div class="recipe-card-body">
+            <span class="recipe-tag">Mains</span>
+            <div class="recipe-name">Spiced Chicken Ouzi with Saffron Rice</div>
+            <div class="recipe-info"><span>⏱ 1h 40m</span><span>🍽 8</span></div>
+          </div>
+        </div>
+        <div class="recipe-card">
+          <div class="recipe-card-img">
+            <div class="recipe-card-img-inner food-bg-6" style="display:flex;align-items:center;justify-content:center;">
+              <div style="font-size:50px;opacity:0.6;">🫕</div>
+            </div>
+            <div class="recipe-card-save">♡</div>
+          </div>
+          <div class="recipe-card-body">
+            <span class="recipe-tag">Stews</span>
+            <div class="recipe-name">Lamb & Chickpea Stew with Turmeric</div>
+            <div class="recipe-info"><span>⏱ 1h 20m</span><span>🍽 6</span></div>
+          </div>
+        </div>
+        <div class="recipe-card">
+          <div class="recipe-card-img">
+            <div class="recipe-card-img-inner food-bg-5" style="display:flex;align-items:center;justify-content:center;">
+              <div style="font-size:50px;opacity:0.6;">🍰</div>
+            </div>
+            <div class="recipe-card-save">♡</div>
+          </div>
+          <div class="recipe-card-body">
+            <span class="recipe-tag">Desserts</span>
+            <div class="recipe-name">Maamoul Date Cookies with Rosewater</div>
+            <div class="recipe-info"><span>⏱ 50m</span><span>🍽 24</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 4: SAVED RECIPES DASHBOARD
+═══════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="page-label">Page 4 — Saved Recipes Dashboard</div>
+
+<div style="background:var(--cream);padding-top:68px;padding-bottom:80px;">
+  <div class="dashboard-header">
+    <div>
+      <h1 class="dashboard-title">My Saved Recipes</h1>
+      <div class="stats-strip">
+        <span class="stat-item">🔖 48 Saved Recipes</span>
+        <span class="stat-dot"></span>
+        <span class="stat-item">📁 6 Folders</span>
+        <span class="stat-dot"></span>
+        <span class="stat-item">Member since Jan 2025</span>
+      </div>
+    </div>
+    <button class="btn-primary">+ New Folder</button>
+  </div>
+
+  <!-- Folders -->
+  <div style="padding:48px 0 0;">
+    <div style="padding:0 80px;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px;">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;">My Folders</h2>
+      <a href="#" class="section-link">See All Folders →</a>
+    </div>
+    <div class="folders-scroll">
+      <!-- Folder 1 -->
+      <div class="folder-card">
+        <div class="folder-mosaic">
+          <div class="folder-mosaic-cell food-bg-ramadan"></div>
+          <div class="folder-mosaic-cell food-bg-3"></div>
+          <div class="folder-mosaic-cell food-bg-4"></div>
+          <div class="folder-mosaic-cell food-bg-5"></div>
+        </div>
+        <div class="folder-info">
+          <div class="folder-name">🌙 Ramadan</div>
+          <div class="folder-count">18 recipes</div>
+        </div>
+      </div>
+      <!-- Folder 2 -->
+      <div class="folder-card">
+        <div class="folder-mosaic">
+          <div class="folder-mosaic-cell food-bg-5"></div>
+          <div class="folder-mosaic-cell food-bg-3"></div>
+          <div class="folder-mosaic-cell food-bg-1"></div>
+          <div class="folder-mosaic-cell food-bg-2"></div>
+        </div>
+        <div class="folder-info">
+          <div class="folder-name">🍰 Desserts to Try</div>
+          <div class="folder-count">12 recipes</div>
+        </div>
+      </div>
+      <!-- Folder 3 -->
+      <div class="folder-card">
+        <div class="folder-mosaic">
+          <div class="folder-mosaic-cell food-bg-5"></div>
+          <div class="folder-mosaic-cell food-bg-1"></div>
+          <div class="folder-mosaic-cell food-bg-4"></div>
+          <div class="folder-mosaic-cell food-bg-6"></div>
+        </div>
+        <div class="folder-info">
+          <div class="folder-name">🎂 Birthday Cakes</div>
+          <div class="folder-count">7 recipes</div>
+        </div>
+      </div>
+      <!-- Folder 4 -->
+      <div class="folder-card">
+        <div class="folder-mosaic">
+          <div class="folder-mosaic-cell food-bg-4"></div>
+          <div class="folder-mosaic-cell food-bg-6"></div>
+          <div class="folder-mosaic-cell food-bg-2"></div>
+          <div class="folder-mosaic-cell food-bg-3"></div>
+        </div>
+        <div class="folder-info">
+          <div class="folder-name">☀️ Easy Breakfast</div>
+          <div class="folder-count">9 recipes</div>
+        </div>
+      </div>
+      <!-- New folder card -->
+      <div class="new-folder-card">
+        <div class="new-folder-icon">+</div>
+        <span>Create New Folder</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recently Saved -->
+  <div style="padding:56px 80px 0;">
+    <div class="section-header">
+      <h2 class="section-title">Recently Saved</h2>
+      <a href="#" class="section-link">View All →</a>
+    </div>
+    <div class="recipe-grid">
+      <div class="recipe-card">
+        <div class="recipe-card-img">
+          <div class="recipe-card-img-inner food-bg-1" style="display:flex;align-items:center;justify-content:center;">
+            <div style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F5DEB3,#C4714A 50%,#8B3A1A);box-shadow:0 8px 24px rgba(0,0,0,0.3);"></div>
+          </div>
+          <div class="recipe-card-save" style="color:var(--terracotta);">♥</div>
+        </div>
+        <div class="recipe-card-body">
+          <span class="recipe-tag">Mains</span>
+          <div class="recipe-name">Slow-Roasted Lamb with Pomegranate</div>
+          <div class="recipe-info"><span>⏱ 2h 15m</span><span style="color:var(--sage);">✓ In Ramadan folder</span></div>
+        </div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-card-img">
+          <div class="recipe-card-img-inner food-bg-5" style="display:flex;align-items:center;justify-content:center;">
+            <div style="width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,#FFD4E8,#C4426A);box-shadow:0 8px 24px rgba(0,0,0,0.3);"></div>
+          </div>
+          <div class="recipe-card-save" style="color:var(--terracotta);">♥</div>
+        </div>
+        <div class="recipe-card-body">
+          <span class="recipe-tag">Desserts</span>
+          <div class="recipe-name">Rosewater Basbousa Cake</div>
+          <div class="recipe-info"><span>⏱ 45m</span><span style="color:var(--warm-gray);">Saved 2 days ago</span></div>
+        </div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-card-img">
+          <div class="recipe-card-img-inner food-bg-4" style="display:flex;align-items:center;justify-content:center;">
+            <div style="font-size:55px;opacity:0.6;">🍳</div>
+          </div>
+          <div class="recipe-card-save" style="color:var(--terracotta);">♥</div>
+        </div>
+        <div class="recipe-card-body">
+          <span class="recipe-tag">Breakfast</span>
+          <div class="recipe-name">Shakshuka with Feta & Fresh Herbs</div>
+          <div class="recipe-info"><span>⏱ 30m</span><span style="color:var(--warm-gray);">Saved 5 days ago</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 5: FOLDERS PAGE
+═══════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="page-label">Page 5 — Folders Page</div>
+
+<div style="background:var(--cream);padding-top:68px;padding-bottom:100px;">
+  <div style="padding:60px 80px 40px;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--sand);">
+    <div>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:400;">My Folders</h1>
+      <p style="font-size:14px;color:var(--warm-gray);margin-top:8px;">Organize your saved recipes into custom collections</p>
+    </div>
+    <button class="btn-primary">+ Create New Folder</button>
+  </div>
+
+  <!-- Create Folder Modal (shown inline as mockup) -->
+  <div style="padding:48px 80px 0;">
+    <div style="background:white;border-radius:20px;padding:40px;max-width:480px;box-shadow:var(--shadow-lg);border:1px solid var(--sand);margin-bottom:56px;">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;margin-bottom:6px;">Create New Folder</h3>
+      <p style="font-size:13px;color:var(--warm-gray);margin-bottom:28px;">Name your collection and pick an icon.</p>
+      <!-- Icon picker -->
+      <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
+        <div style="width:42px;height:42px;border-radius:10px;background:var(--linen);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;border:2px solid var(--terracotta);">🌙</div>
+        <div style="width:42px;height:42px;border-radius:10px;background:var(--linen);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;">🍰</div>
+        <div style="width:42px;height:42px;border-radius:10px;background:var(--linen);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;">🎂</div>
+        <div style="width:42px;height:42px;border-radius:10px;background:var(--linen);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;">☀️</div>
+        <div style="width:42px;height:42px;border-radius:10px;background:var(--linen);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;">❤️</div>
+        <div style="width:42px;height:42px;border-radius:10px;background:var(--linen);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;">☕</div>
+        <div style="width:42px;height:42px;border-radius:10px;background:var(--linen);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;">🥗</div>
+        <div style="width:42px;height:42px;border-radius:10px;background:var(--linen);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;">🫕</div>
+      </div>
+      <!-- Name input -->
+      <div style="margin-bottom:28px;">
+        <label style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--warm-gray);display:block;margin-bottom:8px;">Folder Name</label>
+        <div style="display:flex;align-items:center;gap:0;">
+          <input style="flex:1;padding:14px 16px;border:1.5px solid var(--terracotta);border-radius:8px 0 0 8px;font-family:'DM Sans',sans-serif;font-size:15px;outline:none;color:var(--espresso);" value="Ramadan Recipes" type="text">
+          <div style="padding:14px 14px;background:var(--linen);border:1.5px solid var(--terracotta);border-left:none;border-radius:0 8px 8px 0;font-size:12px;color:var(--warm-gray);">18/50</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <button class="btn-primary" style="flex:1;justify-content:center;">Create Folder</button>
+        <button class="btn-ghost">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Folder Grid -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;">
+      <!-- Folder 1 active -->
+      <div style="background:white;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;border:2px solid var(--terracotta);">
+        <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:160px;">
+          <div class="food-bg-ramadan"></div>
+          <div class="food-bg-3"></div>
+          <div class="food-bg-4"></div>
+          <div class="food-bg-5"></div>
+        </div>
+        <div style="padding:16px 18px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:15px;font-weight:500;">🌙 Ramadan</div>
+            <div style="font-size:12px;color:var(--warm-gray);margin-top:2px;">18 recipes</div>
+          </div>
+          <div style="font-size:18px;color:var(--warm-gray);cursor:pointer;">···</div>
+        </div>
+      </div>
+
+      <div style="background:white;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:160px;">
+          <div class="food-bg-5"></div>
+          <div class="food-bg-3"></div>
+          <div class="food-bg-1"></div>
+          <div class="food-bg-2"></div>
+        </div>
+        <div style="padding:16px 18px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:15px;font-weight:500;">🍰 Desserts to Try</div>
+            <div style="font-size:12px;color:var(--warm-gray);margin-top:2px;">12 recipes</div>
+          </div>
+          <div style="font-size:18px;color:var(--warm-gray);cursor:pointer;">···</div>
+        </div>
+      </div>
+
+      <div style="background:white;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:160px;">
+          <div class="food-bg-5"></div>
+          <div class="food-bg-1"></div>
+          <div class="food-bg-4"></div>
+          <div class="food-bg-6"></div>
+        </div>
+        <div style="padding:16px 18px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:15px;font-weight:500;">🎂 Birthday Cakes</div>
+            <div style="font-size:12px;color:var(--warm-gray);margin-top:2px;">7 recipes</div>
+          </div>
+          <div style="font-size:18px;color:var(--warm-gray);cursor:pointer;">···</div>
+        </div>
+      </div>
+
+      <div style="background:white;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:160px;">
+          <div class="food-bg-4"></div>
+          <div class="food-bg-6"></div>
+          <div class="food-bg-2"></div>
+          <div class="food-bg-3"></div>
+        </div>
+        <div style="padding:16px 18px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:15px;font-weight:500;">☀️ Easy Breakfast</div>
+            <div style="font-size:12px;color:var(--warm-gray);margin-top:2px;">9 recipes</div>
+          </div>
+          <div style="font-size:18px;color:var(--warm-gray);cursor:pointer;">···</div>
+        </div>
+      </div>
+
+      <!-- Empty new folder cards -->
+      <div style="background:white;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:160px;">
+          <div class="food-bg-1"></div>
+          <div class="food-bg-2"></div>
+          <div class="food-bg-5"></div>
+          <div class="food-bg-4"></div>
+        </div>
+        <div style="padding:16px 18px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:15px;font-weight:500;">❤️ Favourites</div>
+            <div style="font-size:12px;color:var(--warm-gray);margin-top:2px;">5 recipes</div>
+          </div>
+          <div style="font-size:18px;color:var(--warm-gray);cursor:pointer;">···</div>
+        </div>
+      </div>
+
+      <div style="background:white;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:160px;">
+          <div class="food-bg-6"></div>
+          <div class="food-bg-3"></div>
+          <div class="food-bg-2"></div>
+          <div class="food-bg-1"></div>
+        </div>
+        <div style="padding:16px 18px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:15px;font-weight:500;">🥗 Light Meals</div>
+            <div style="font-size:12px;color:var(--warm-gray);margin-top:2px;">3 recipes</div>
+          </div>
+          <div style="font-size:18px;color:var(--warm-gray);cursor:pointer;">···</div>
+        </div>
+      </div>
+
+      <!-- Create new -->
+      <div class="new-folder-card" style="height:220px;">
+        <div class="new-folder-icon">+</div>
+        <span style="font-size:14px;">Create New Folder</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Final footer note -->
+<div style="background:var(--espresso);padding:24px 80px;display:flex;justify-content:space-between;align-items:center;">
+  <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:white;">Lilly Kitchen — Visual Mockup</div>
+  <div style="font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;">5 PAGES · HOMEPAGE · RECIPES · DETAIL · SAVED · FOLDERS</div>
+</div>
+
+</body>
+</html>

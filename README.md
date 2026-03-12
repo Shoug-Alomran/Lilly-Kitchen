@@ -1,22 +1,53 @@
 # Lilly Kitchen
 
-Lilly Kitchen is a modern recipe platform designed to transform Instagram-based cooking content into a structured, searchable recipe experience.
+Lilly Kitchen is a minimal Next.js web application scaffold for a recipe platform. It uses the App Router, plain JavaScript, plain CSS, and Markdown-based recipe content so development can start with a clean foundation.
 
-The project converts Lilly Kitchen’s social media recipes into a dedicated web platform where users can easily browse, search, and organize recipes. The site focuses on clean visual presentation, fast performance, and a user-friendly interface tailored for food photography and step-by-step cooking instructions.
+## Tech Stack
 
-The platform includes a user account system that allows visitors to save recipes and organize them into custom folders for easy access later.
+- Next.js (App Router)
+- JavaScript
+- CSS
+- Markdown recipe content
+- Supabase placeholders for future authentication and database setup
 
-## Key Features
+## Getting Started
 
-- Structured recipe pages with ingredients and instructions
-- Recipe categories and curated collections
-- Searchable recipe archive
-- Instagram content integration
-- User authentication powered by Supabase
-- Saved recipes and custom folder organization
-- Clean, image-focused design optimized for food photography
-- Fast, scalable architecture suitable for content-heavy recipe libraries
+1. Install dependencies:
 
-## Project Goal
+```bash
+npm install
+```
 
-The goal of the project is to turn Lilly Kitchen’s Instagram presence into a fully organized digital cookbook that improves discoverability, usability, and long-term content accessibility.
+2. Run the development server:
+
+```bash
+npm run dev
+```
+
+3. Open [http://localhost:3000](http://localhost:3000)
+
+## Available Scripts
+
+- `npm run dev` starts the local development server
+- `npm run build` runs a production build check
+- `npm run start` starts the production server after a build
+
+## Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in the values when Supabase is ready to be connected.
+
+Current placeholders:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+## Recipe Content
+
+Recipe content is expected to live in `content/recipes/` as Markdown files. A sample placeholder recipe is included to show the intended structure.
+
+## Notes
+
+- This repository only includes the base scaffold.
+- Authentication, database integration, and production features should be added in later steps.
+- Placeholder comments are included in the app files to mark future implementation areas.
