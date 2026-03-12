@@ -1,56 +1,57 @@
 import Link from "next/link";
+import { localizeHref } from "@/lib/i18n";
 
-export default function SiteFooter() {
+export default function SiteFooter({ locale = "en", dictionary }) {
+  const footer = dictionary.footer;
+
   return (
     <footer className="site-footer">
       <div className="footer-grid">
         <div>
-          <div className="footer-logo">Lilly Kitchen</div>
-          <p className="footer-desc">
-            Simple ingredients. Honest cooking. Recipes made to be shared, from Lilly&apos;s kitchen to yours.
-          </p>
+          <div className="footer-logo">{dictionary.brand}</div>
+          <p className="footer-desc">{footer.description}</p>
         </div>
         <div>
-          <div className="footer-col-title">Explore</div>
-          <Link href="/recipes" className="footer-link">
-            All Recipes
+          <div className="footer-col-title">{footer.explore}</div>
+          <Link href={localizeHref(locale, "/recipes")} className="footer-link">
+            {footer.allRecipes}
           </Link>
-          <Link href="/categories" className="footer-link">
-            Categories
+          <Link href={localizeHref(locale, "/categories")} className="footer-link">
+            {footer.categories}
           </Link>
-          <Link href="/collections" className="footer-link">
-            Collections
-          </Link>
-        </div>
-        <div>
-          <div className="footer-col-title">Account</div>
-          <Link href="/signup" className="footer-link">
-            Sign Up
-          </Link>
-          <Link href="/login" className="footer-link">
-            Log In
-          </Link>
-          <Link href="/saved" className="footer-link">
-            Saved Recipes
-          </Link>
-          <Link href="/folders" className="footer-link">
-            Folders
+          <Link href={localizeHref(locale, "/collections")} className="footer-link">
+            {footer.collections}
           </Link>
         </div>
         <div>
-          <div className="footer-col-title">About</div>
-          <Link href="/about" className="footer-link">
-            Our Story
+          <div className="footer-col-title">{footer.account}</div>
+          <Link href={localizeHref(locale, "/signup")} className="footer-link">
+            {footer.signUp}
           </Link>
-          <a className="footer-link" href="https://www.instagram.com/" target="_blank" rel="noreferrer">
-            Instagram
+          <Link href={localizeHref(locale, "/login")} className="footer-link">
+            {footer.logIn}
+          </Link>
+          <Link href={localizeHref(locale, "/saved")} className="footer-link">
+            {footer.savedRecipes}
+          </Link>
+          <Link href={localizeHref(locale, "/folders")} className="footer-link">
+            {footer.folders}
+          </Link>
+        </div>
+        <div>
+          <div className="footer-col-title">{footer.about}</div>
+          <Link href={localizeHref(locale, "/about")} className="footer-link">
+            {footer.ourStory}
+          </Link>
+          <a className="footer-link" href="https://www.instagram.com/lilly.kitchen1/" target="_blank" rel="noreferrer">
+            {footer.instagram}
           </a>
         </div>
       </div>
       <div className="footer-bottom">
         <span>© 2026 Lilly Kitchen</span>
         <a href="https://blueprint.shoug-tech.com/" target="_blank" rel="noreferrer">
-          Made by Blueprint
+          {footer.madeBy}
         </a>
       </div>
     </footer>

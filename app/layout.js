@@ -1,7 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
-import SiteFooter from "@/components/SiteFooter";
-import SiteHeader from "@/components/SiteHeader";
 import "../styles/globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -25,12 +23,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body>
-        <div className="site-shell">
-          <SiteHeader />
-          {children}
-          <SiteFooter />
-          <Analytics />
-        </div>
+        {children}
+        <Analytics />
       </body>
     </html>
   );

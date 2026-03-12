@@ -3,23 +3,48 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { localizeHref, switchLocalePath } from "@/lib/i18n";
+import { getCurrentUser, getSupabaseBrowserClient, signOutUser } from "@/lib/supabase";
 
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/recipes", label: "Recipes" },
-  { href: "/categories", label: "Categories" },
-  { href: "/collections", label: "Collections" },
-  { href: "/about", label: "About" },
-  { href: "/saved", label: "Saved" }
-];
-
-export default function SiteHeader() {
+export default function SiteHeader({ locale = "en", dictionary }) {
   const pathname = usePathname();
   const router = useRouter();
+  const navItems = [
+    { href: "/", label: dictionary.nav.home },
+    { href: "/recipes", label: dictionary.nav.recipes },
+    { href: "/categories", label: dictionary.nav.categories },
+    { href: "/collections", label: dictionary.nav.collections },
+    { href: "/about", label: dictionary.nav.about },
+    { href: "/saved", label: dictionary.nav.saved }
+  ];
   const [query, setQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+      } catch {
+        setUser(null);
+      }
+    }
+
+    const supabase = getSupabaseBrowserClient();
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    loadUser();
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     function handleScroll() {
@@ -35,6 +60,7 @@ export default function SiteHeader() {
   useEffect(() => {
     setIsMenuOpen(false);
     setIsSearchOpen(false);
+    setIsAccountMenuOpen(false);
   }, [pathname]);
 
   function handleSearchSubmit(event) {
@@ -43,30 +69,45 @@ export default function SiteHeader() {
     const trimmedQuery = query.trim();
 
     if (!trimmedQuery) {
-      router.push("/recipes");
+      router.push(localizeHref(locale, "/recipes"));
       setIsSearchOpen(false);
       return;
     }
 
-    router.push(`/recipes?search=${encodeURIComponent(trimmedQuery)}`);
+    router.push(localizeHref(locale, `/recipes?search=${encodeURIComponent(trimmedQuery)}`));
     setIsSearchOpen(false);
   }
 
-  const isTransparent = pathname === "/" && !isScrolled && !isMenuOpen && !isSearchOpen;
+  async function handleSignOut() {
+    try {
+      await signOutUser();
+      setUser(null);
+      setIsAccountMenuOpen(false);
+      router.push(localizeHref(locale, "/"));
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const homePath = localizeHref(locale, "/");
+  const alternateLocale = locale === "ar" ? "en" : "ar";
+  const alternatePath = switchLocalePath(pathname, alternateLocale);
+  const isTransparent = pathname === homePath && !isScrolled && !isMenuOpen && !isSearchOpen;
 
   return (
     <header className={`site-header ${isTransparent ? "is-transparent" : ""}`}>
       <div className="site-header__inner">
-        <Link href="/" className="site-brand">
-          Lilly Kitchen
+        <Link href={homePath} className="site-brand">
+          {dictionary.brand}
         </Link>
 
         <nav className="site-nav" aria-label="Primary">
           {navItems.map((item) => (
             <Link
               key={item.href}
-              href={item.href}
-              className={pathname === item.href ? "is-active" : ""}
+              href={localizeHref(locale, item.href)}
+              className={pathname === localizeHref(locale, item.href) ? "is-active" : ""}
             >
               {item.label}
             </Link>
@@ -94,9 +135,13 @@ export default function SiteHeader() {
                 }
               }}
             >
-              Search
+              {dictionary.nav.search}
             </button>
           </form>
+          <Link href={alternatePath} className="site-locale-toggle" hrefLang={alternateLocale}>
+            <span>{dictionary.language.label}</span>
+            <strong>{alternateLocale === "ar" ? dictionary.language.arabic : dictionary.language.english}</strong>
+          </Link>
           <button
             type="button"
             className="site-menu-toggle"
@@ -104,24 +149,58 @@ export default function SiteHeader() {
             aria-label="Toggle navigation menu"
             onClick={() => setIsMenuOpen((value) => !value)}
           >
-            Menu
+            {dictionary.nav.menu}
           </button>
-          <Link href="/account" className="site-avatar" aria-label="Account">
-            L
-          </Link>
+          <div className="site-account-menu">
+            <button
+              type="button"
+              className="site-avatar"
+              aria-label="Account"
+              aria-expanded={isAccountMenuOpen}
+              onClick={() => setIsAccountMenuOpen((value) => !value)}
+            >
+              {user?.email?.[0]?.toUpperCase() || "L"}
+            </button>
+
+            <div className={`site-account-dropdown ${isAccountMenuOpen ? "is-open" : ""}`}>
+              {user ? (
+                <>
+                  <p className="site-account-dropdown__label">{user.email}</p>
+                  <Link href={localizeHref(locale, "/account")}>{dictionary.nav.account}</Link>
+                  <Link href={localizeHref(locale, "/saved")}>{dictionary.nav.savedRecipes}</Link>
+                  <button type="button" onClick={handleSignOut}>
+                    {dictionary.nav.signOut}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p className="site-account-dropdown__label">{dictionary.nav.welcome}</p>
+                  <Link href={localizeHref(locale, "/login")}>{dictionary.nav.login}</Link>
+                  <Link href={localizeHref(locale, "/signup")}>{dictionary.nav.signup}</Link>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
       <div className={`site-mobile-panel ${isMenuOpen ? "is-open" : ""}`}>
         <nav className="site-mobile-nav" aria-label="Mobile">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className={pathname === item.href ? "is-active" : ""}>
+            <Link
+              key={item.href}
+              href={localizeHref(locale, item.href)}
+              className={pathname === localizeHref(locale, item.href) ? "is-active" : ""}
+            >
               {item.label}
             </Link>
           ))}
-          <Link href="/account">Account</Link>
-          <Link href="/login">Login</Link>
-          <Link href="/signup">Sign Up</Link>
+          <Link href={localizeHref(locale, "/account")}>{dictionary.nav.account}</Link>
+          <Link href={localizeHref(locale, "/login")}>{dictionary.nav.login}</Link>
+          <Link href={localizeHref(locale, "/signup")}>{dictionary.nav.signup}</Link>
+          <Link href={alternatePath} hrefLang={alternateLocale}>
+            {dictionary.language.label}: {alternateLocale === "ar" ? dictionary.language.arabic : dictionary.language.english}
+          </Link>
         </nav>
       </div>
     </header>

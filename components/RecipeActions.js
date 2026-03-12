@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getDictionary } from "@/lib/i18n";
 import { isRecipeSaved, removeSavedRecipe, saveRecipe } from "@/lib/supabase";
 
-export default function RecipeActions({ recipeSlug }) {
+export default function RecipeActions({ recipeSlug, locale = "en" }) {
+  const dictionary = getDictionary(locale);
+  const labels = dictionary.actions;
   const [isSaved, setIsSaved] = useState(false);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,14 +34,14 @@ export default function RecipeActions({ recipeSlug }) {
       if (savedState) {
         await removeSavedRecipe({ recipeSlug });
         setIsSaved(false);
-        setMessage("Recipe removed from saved recipes.");
+        setMessage(labels.removed);
       } else {
         await saveRecipe({ recipeSlug });
         setIsSaved(true);
-        setMessage("Recipe saved to your account.");
+        setMessage(labels.savedMessage);
       }
     } catch (error) {
-      setMessage(error.message || "You need to sign in to save recipes.");
+      setMessage(error.message || labels.signInNeeded);
     } finally {
       setIsLoading(false);
     }
@@ -50,29 +53,29 @@ export default function RecipeActions({ recipeSlug }) {
 
       if (navigator.share) {
         await navigator.share({
-          title: "Lilly Kitchen Recipe",
+          title: labels.shareTitle,
           url: shareUrl
         });
         return;
       }
 
       await navigator.clipboard.writeText(shareUrl);
-      setMessage("Recipe link copied to your clipboard.");
+      setMessage(labels.copied);
     } catch (error) {
-      setMessage(error.message || "Unable to share this recipe right now.");
+      setMessage(error.message || labels.shareError);
     }
   }
 
   return (
     <div className="action-row">
       <button type="button" className="btn-save" onClick={handleSaveToggle} disabled={isLoading}>
-        {isSaved ? "♥ Saved" : "🔖 Save Recipe"}
+        {isSaved ? labels.saved : labels.saveRecipe}
       </button>
       <button type="button" className="btn-ghost" onClick={() => window.print()}>
-        🖨 Print
+        {labels.print}
       </button>
       <button type="button" className="btn-ghost" onClick={handleShare}>
-        📤 Share
+        {labels.share}
       </button>
       {message ? <p className="action-message">{message}</p> : null}
     </div>

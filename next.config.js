@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Placeholder for future Next.js configuration.
+  outputFileTracingRoot: __dirname
 };
 
 module.exports = nextConfig;

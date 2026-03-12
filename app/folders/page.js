@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { localizeHref } from "@/lib/i18n";
 import { createFolder, deleteFolder, getCurrentUser, getFolders } from "@/lib/supabase";
 
-export default function FoldersPage() {
+export default function FoldersPage({ locale = "en" }) {
   const [user, setUser] = useState(null);
   const [folders, setFolders] = useState([]);
   const [name, setName] = useState("");
@@ -86,7 +87,7 @@ export default function FoldersPage() {
       <section className="section-shell">
         {!user && !isLoading ? (
           <p className="status status-muted">
-            You need to <Link href="/login">log in</Link> before using folders.
+            You need to <Link href={localizeHref(locale, "/login")}>log in</Link> before using folders.
           </p>
         ) : null}
 
@@ -135,7 +136,7 @@ export default function FoldersPage() {
         <div className="cat-grid cat-grid-large">
           {folders.map((folder) => (
             <article key={folder.id} className="folder-card">
-              <Link href={`/folders/${folder.id}`}>
+              <Link href={localizeHref(locale, `/folders/${folder.id}`)}>
                 <div className="folder-mosaic">
                   <div className="folder-mosaic-cell food-bg-ramadan" />
                   <div className="folder-mosaic-cell food-bg-3" />

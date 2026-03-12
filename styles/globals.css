@@ -130,6 +130,29 @@ img {
   gap: 16px;
 }
 
+.site-account-menu {
+  position: relative;
+}
+
+.site-locale-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--sand);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--warm-gray);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.site-locale-toggle strong {
+  color: var(--espresso);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
 .site-search {
   display: flex;
   align-items: center;
@@ -184,6 +207,7 @@ img {
   color: var(--terracotta);
   font-family: var(--font-display);
   font-size: 18px;
+  cursor: pointer;
 }
 
 .site-header.is-transparent .site-avatar {
@@ -192,8 +216,95 @@ img {
   color: var(--white);
 }
 
+.site-header.is-transparent .site-locale-toggle {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.site-header.is-transparent .site-locale-toggle strong {
+  color: var(--white);
+}
+
 .site-mobile-panel {
   display: none;
+}
+
+.locale-shell[dir="rtl"] {
+  direction: rtl;
+}
+
+.locale-shell[dir="rtl"] .hero-content {
+  left: auto;
+  right: 8%;
+}
+
+.locale-shell[dir="rtl"] .hero-scroll {
+  right: auto;
+  left: 8%;
+}
+
+.locale-shell[dir="rtl"] .site-account-dropdown {
+  right: auto;
+  left: 0;
+  text-align: right;
+}
+
+.locale-shell[dir="rtl"] .intro-author,
+.locale-shell[dir="rtl"] .site-header__actions,
+.locale-shell[dir="rtl"] .account-summary__identity {
+  flex-direction: row-reverse;
+}
+
+.locale-shell[dir="rtl"] .section-header,
+.locale-shell[dir="rtl"] .recipe-detail-byline,
+.locale-shell[dir="rtl"] .action-row,
+.locale-shell[dir="rtl"] .account-actions,
+.locale-shell[dir="rtl"] .account-card__actions {
+  direction: rtl;
+}
+
+.site-account-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  min-width: 220px;
+  padding: 12px;
+  border: 1px solid var(--sand);
+  border-radius: 16px;
+  background: rgba(250, 248, 245, 0.98);
+  box-shadow: var(--shadow-lg);
+  display: none;
+  z-index: 120;
+}
+
+.site-account-dropdown.is-open {
+  display: grid;
+  gap: 6px;
+}
+
+.site-account-dropdown a,
+.site-account-dropdown button {
+  width: 100%;
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--espresso);
+  text-align: left;
+}
+
+.site-account-dropdown a:hover,
+.site-account-dropdown button:hover {
+  background: var(--white);
+}
+
+.site-account-dropdown__label {
+  margin: 0 0 6px;
+  padding: 6px 12px;
+  color: var(--warm-gray);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .hero {
@@ -388,6 +499,13 @@ img {
   padding: 12px 24px;
   background: transparent;
   color: var(--espresso);
+}
+
+.button-danger {
+  border: 1.5px solid #e3b9b9;
+  padding: 12px 24px;
+  background: #fff3f3;
+  color: var(--danger);
 }
 
 .btn-light {
@@ -779,15 +897,28 @@ img {
   padding: 100px 80px;
 }
 
-.ig-grid {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 18px;
+.ig-marquee {
+  position: relative;
+  overflow: hidden;
   margin-bottom: 24px;
+  padding: 4px 0 12px;
+}
+
+.ig-track {
+  display: flex;
+  gap: 18px;
+  width: max-content;
+  animation: ig-marquee-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.ig-marquee:hover .ig-track {
+  animation-play-state: paused;
 }
 
 .ig-tile {
   position: relative;
+  flex: 0 0 min(300px, 72vw);
   aspect-ratio: 1;
   border-radius: 18px;
   overflow: hidden;
@@ -813,6 +944,16 @@ img {
 .ig-sub {
   margin-bottom: 24px;
   color: var(--warm-gray);
+}
+
+@keyframes ig-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 9px));
+  }
 }
 
 .newsletter {
@@ -1360,6 +1501,93 @@ textarea {
   font-weight: 500;
 }
 
+.account-layout {
+  display: grid;
+  gap: 24px;
+}
+
+.account-summary {
+  display: flex;
+  align-items: center;
+}
+
+.account-summary__identity {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.account-summary__avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 999px;
+  background: var(--blush);
+  border: 1px solid var(--sand);
+  color: var(--terracotta);
+  font-family: var(--font-display);
+  font-size: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.account-summary__eyebrow,
+.account-summary__label {
+  color: var(--warm-gray);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.account-summary__eyebrow {
+  margin: 0;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.account-card {
+  align-content: start;
+}
+
+.account-card__actions,
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.account-card__actions .button,
+.account-actions .button {
+  min-width: 180px;
+}
+
+.inline-link-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.text-link-button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--terracotta);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.text-link-button:hover {
+  text-decoration: underline;
+}
+
+.account-card--danger {
+  gap: 20px;
+}
+
 .folder-card {
   flex: 0 0 220px;
   background: var(--white);
@@ -1387,6 +1615,20 @@ textarea {
   margin-top: 4px;
   font-size: 12px;
   color: var(--warm-gray);
+}
+
+.folder-summary {
+  max-width: 720px;
+  padding: 0 0 8px;
+}
+
+.folder-summary .display-title {
+  margin-bottom: 12px;
+}
+
+.folder-summary .page-intro {
+  max-width: 56ch;
+  margin: 0;
 }
 
 .new-folder-card {
@@ -1480,6 +1722,10 @@ textarea {
   .ingredients-sidebar {
     position: static;
   }
+
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 800px) {
@@ -1512,6 +1758,10 @@ textarea {
     flex: 1 1 auto;
     min-width: 0;
     justify-content: flex-end;
+  }
+
+  .site-locale-toggle span {
+    display: none;
   }
 
   .site-search input {
@@ -1569,6 +1819,21 @@ textarea {
     max-width: 6ch;
   }
 
+  .account-summary__identity {
+    align-items: flex-start;
+  }
+
+  .account-summary__avatar {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+  }
+
+  .account-card__actions .button,
+  .account-actions .button {
+    width: 100%;
+  }
+
   .hero-subtitle {
     max-width: 20ch;
     font-size: 20px;
@@ -1591,10 +1856,6 @@ textarea {
   .collection-grid,
   .story-grid {
     grid-template-columns: 1fr;
-  }
-
-  .ig-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .newsletter-form,
@@ -1641,6 +1902,11 @@ textarea {
     width: 34px;
     height: 34px;
     font-size: 16px;
+  }
+
+  .site-account-dropdown {
+    right: 0;
+    min-width: 180px;
   }
 
   .hero {

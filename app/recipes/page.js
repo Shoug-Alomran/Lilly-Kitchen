@@ -1,5 +1,6 @@
 import Link from "next/link";
 import RecipeCard from "@/components/RecipeCard";
+import { getDictionary, localizeHref, translateCategory, translateCollection } from "@/lib/i18n";
 import {
   categoryCollection,
   getRecipesByCategory,
@@ -7,7 +8,9 @@ import {
   searchRecipes
 } from "@/lib/recipes";
 
-export default function RecipesPage({ searchParams }) {
+export default function RecipesPage({ searchParams, locale = "en" }) {
+  const dictionary = getDictionary(locale);
+  const labels = dictionary.recipes;
   const activeCategory = searchParams?.category || "All";
   const activeCollection = searchParams?.collection || "";
   const searchQuery = searchParams?.search || "";
@@ -20,30 +23,28 @@ export default function RecipesPage({ searchParams }) {
     <main className="page-shell">
       <section className="page-hero">
         <div>
-          <div className="page-eyebrow">Recipe Library</div>
-          <h1 className="page-title">All Recipes</h1>
-          <p className="page-subtitle">
-            Browse editorial recipes, seasonal collections, and the dishes Lilly returns to most.
-          </p>
+          <div className="page-eyebrow">{labels.eyebrow}</div>
+          <h1 className="page-title">{labels.title}</h1>
+          <p className="page-subtitle">{labels.subtitle}</p>
         </div>
-        <div className="sort-chip">Sort: Latest</div>
+        <div className="sort-chip">{labels.sortLatest}</div>
       </section>
 
       <section className="page-shell__content">
         <div className="search-shell">
-          <form className="search-bar" action="/recipes">
+          <form className="search-bar" action={localizeHref(locale, "/recipes")}>
             <span>🔍</span>
             <input
               type="search"
               name="search"
               defaultValue={searchQuery}
-              placeholder="Search recipes, ingredients, occasions..."
+              placeholder={labels.searchPlaceholder}
               aria-label="Search recipes"
             />
             {activeCategory !== "All" ? <input type="hidden" name="category" value={activeCategory} /> : null}
             {activeCollection ? <input type="hidden" name="collection" value={activeCollection} /> : null}
             <button type="submit" className="search-submit">
-              Search
+              {labels.search}
             </button>
           </form>
         </div>
@@ -52,34 +53,34 @@ export default function RecipesPage({ searchParams }) {
           {categoryCollection.map((category) => (
             <Link
               key={category.name}
-              href={category.name === "All" ? "/recipes" : `/recipes?category=${encodeURIComponent(category.name)}`}
+              href={category.name === "All" ? localizeHref(locale, "/recipes") : localizeHref(locale, `/recipes?category=${encodeURIComponent(category.name)}`)}
               className={`cat-pill ${activeCategory === category.name && !activeCollection ? "active" : ""}`}
             >
-              {category.emoji} {category.name}
+              {category.emoji} {translateCategory(category.name, locale)}
             </Link>
           ))}
           {activeCollection ? (
-            <Link href="/recipes" className="cat-pill active">
-              ✦ {activeCollection}
+            <Link href={localizeHref(locale, "/recipes")} className="cat-pill active">
+              ✦ {translateCollection(activeCollection, locale)}
             </Link>
           ) : null}
         </div>
 
         <div className="results-copy">
-          Showing {recipes.length} recipe{recipes.length === 1 ? "" : "s"}
-          {activeCollection ? ` in ${activeCollection}` : activeCategory !== "All" ? ` for ${activeCategory}` : ""}
-          {searchQuery ? ` matching "${searchQuery}"` : ""}.
+          {labels.results} {recipes.length} {recipes.length === 1 ? labels.recipe : labels.recipes}
+          {activeCollection ? ` ${labels.in} ${translateCollection(activeCollection, locale)}` : activeCategory !== "All" ? ` ${labels.for} ${translateCategory(activeCategory, locale)}` : ""}
+          {searchQuery ? ` ${labels.matching} "${searchQuery}"` : ""}.
         </div>
 
         <div className="recipe-grid">
           {recipes.map((recipe) => (
-            <RecipeCard key={recipe.slug} recipe={recipe} />
+            <RecipeCard key={recipe.slug} recipe={recipe} locale={locale} />
           ))}
         </div>
 
         <div className="section-center">
-          <Link href="/recipes" className="btn-ghost">
-            Load More Recipes
+          <Link href={localizeHref(locale, "/recipes")} className="btn-ghost">
+            {labels.loadMore}
           </Link>
         </div>
       </section>

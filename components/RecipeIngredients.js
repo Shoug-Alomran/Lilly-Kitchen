@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { getDictionary } from "@/lib/i18n";
 
 function parseLeadingQuantity(item) {
   const spacedMatch = item.match(/^(\d+(?:\.\d+)?|\d+\/\d+)\s+(.+)$/);
@@ -71,7 +72,9 @@ function scaleIngredient(item, baseServings, targetServings) {
   return `${formatQuantity(scaledValue)} ${parsed.rest}`;
 }
 
-export default function RecipeIngredients({ ingredients, baseServings }) {
+export default function RecipeIngredients({ ingredients, baseServings, locale = "en" }) {
+  const dictionary = getDictionary(locale);
+  const labels = dictionary.ingredients;
   const [servings, setServings] = useState(baseServings);
   const [checkedItems, setCheckedItems] = useState({});
   const scaledIngredients = useMemo(() => {
@@ -102,14 +105,14 @@ export default function RecipeIngredients({ ingredients, baseServings }) {
 
   return (
     <aside className="ingredients-sidebar">
-      <div className="ingr-title">Ingredients</div>
+      <div className="ingr-title">{labels.title}</div>
       <div className="servings-adjuster">
         <button type="button" className="adj-btn" onClick={() => setServings((value) => Math.max(1, value - 1))}>
           −
         </button>
         <div>
           <div className="adj-num">{servings}</div>
-          <div className="adj-label">servings</div>
+          <div className="adj-label">{labels.servings}</div>
         </div>
         <button type="button" className="adj-btn" onClick={() => setServings((value) => value + 1)}>
           +
@@ -133,7 +136,7 @@ export default function RecipeIngredients({ ingredients, baseServings }) {
       ))}
 
       <button type="button" className="copy-link" onClick={handleCopy}>
-        📋 Copy ingredients list
+        {labels.copy}
       </button>
     </aside>
   );

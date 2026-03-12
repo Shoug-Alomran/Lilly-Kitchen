@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import RecipeCard from "@/components/RecipeCard";
+import { localizeHref } from "@/lib/i18n";
 import { getRecipeBySlug } from "@/lib/recipes";
 import {
   getCurrentUser,
@@ -12,7 +13,7 @@ import {
   saveRecipe
 } from "@/lib/supabase";
 
-export default function SavedPage() {
+export default function SavedPage({ locale = "en" }) {
   const [user, setUser] = useState(null);
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [folders, setFolders] = useState([]);
@@ -97,7 +98,7 @@ export default function SavedPage() {
           <h1 className="page-title">My Saved Recipes</h1>
           <p className="page-subtitle">Collect recipes you love, then organize them into folders for later.</p>
         </div>
-        <Link href="/folders" className="btn-primary">
+        <Link href={localizeHref(locale, "/folders")} className="btn-primary">
           + New Folder
         </Link>
       </section>
@@ -111,7 +112,7 @@ export default function SavedPage() {
 
         {!user && !isLoading ? (
           <p className="status status-muted">
-            You need to <Link href="/login">log in</Link> before using saved recipes.
+            You need to <Link href={localizeHref(locale, "/login")}>log in</Link> before using saved recipes.
           </p>
         ) : null}
 
@@ -128,13 +129,18 @@ export default function SavedPage() {
           </label>
 
           <label className="field">
-            <span>Folder ID (optional)</span>
-            <input
-              type="text"
+            <span>Folder (optional)</span>
+            <select
               value={folderId}
               onChange={(event) => setFolderId(event.target.value)}
-              placeholder="Paste a folder UUID if needed"
-            />
+            >
+              <option value="">Save without a folder</option>
+              {folders.map((folder) => (
+                <option key={folder.id} value={folder.id}>
+                  {folder.name}
+                </option>
+              ))}
+            </select>
           </label>
 
           {errorMessage ? <p className="status status-error">{errorMessage}</p> : null}
@@ -149,14 +155,14 @@ export default function SavedPage() {
           <>
             <div className="section-header">
               <h2 className="section-title display-title">My Folders</h2>
-              <Link href="/folders" className="section-link">
+              <Link href={localizeHref(locale, "/folders")} className="section-link">
                 See All Folders →
               </Link>
             </div>
 
             <div className="folders-scroll">
               {folders.map((folder, index) => (
-                <Link key={folder.id} href={`/folders/${folder.id}`} className="folder-card">
+                <Link key={folder.id} href={localizeHref(locale, `/folders/${folder.id}`)} className="folder-card">
                   <div className="folder-mosaic">
                     <div className={`folder-mosaic-cell food-bg-${(index % 6) + 1}`} />
                     <div className={`folder-mosaic-cell food-bg-${((index + 1) % 6) + 1}`} />
@@ -170,7 +176,7 @@ export default function SavedPage() {
                 </Link>
               ))}
 
-              <Link href="/folders" className="new-folder-card">
+              <Link href={localizeHref(locale, "/folders")} className="new-folder-card">
                 <div className="new-folder-icon">+</div>
                 <span>Create New Folder</span>
               </Link>
@@ -180,7 +186,7 @@ export default function SavedPage() {
 
         <div className="section-header">
           <h2 className="section-title display-title">Recently Saved</h2>
-          <Link href="/folders" className="section-link">
+          <Link href={localizeHref(locale, "/folders")} className="section-link">
             See All Folders →
           </Link>
         </div>
@@ -205,6 +211,7 @@ export default function SavedPage() {
                   <RecipeCard
                     recipe={recipe}
                     saved
+                    locale={locale}
                     subtitle={savedRecipe.folders?.name ? `In ${savedRecipe.folders.name}` : "Saved"}
                   />
                   <button
