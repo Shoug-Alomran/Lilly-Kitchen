@@ -1,20 +1,42 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import RecipeActions from "@/components/RecipeActions";
 import RecipeIngredients from "@/components/RecipeIngredients";
 import RecipeCard from "@/components/RecipeCard";
 import { getDictionary, translateCategory, translateDifficulty } from "@/lib/i18n";
-import { getRecipeBySlug, getRelatedRecipes } from "@/lib/recipes";
+import { getRecipePageData } from "@/lib/data/recipes";
 
-export default function RecipeDetailPage({ params, locale = "en" }) {
+const getCachedRecipePageData = cache((slug, locale = "en") => getRecipePageData(slug, locale));
+
+export async function generateRecipeMetadata({ params, locale = "en" }) {
+  const resolvedParams = await params;
+  const pageData = getCachedRecipePageData(resolvedParams.slug, locale);
+
+  if (!pageData) {
+    return {};
+  }
+
+  return {
+    title: `${pageData.recipe.title} | Lilly Kitchen`,
+    description: pageData.recipe.excerpt
+  };
+}
+
+export async function generateMetadata({ params }) {
+  return generateRecipeMetadata({ params });
+}
+
+export default async function RecipeDetailPage({ params, locale = "en" }) {
   const dictionary = getDictionary(locale);
   const labels = dictionary.recipeDetail;
-  const recipe = getRecipeBySlug(params.slug, locale);
+  const resolvedParams = await params;
+  const pageData = getCachedRecipePageData(resolvedParams.slug, locale);
 
-  if (!recipe) {
+  if (!pageData) {
     notFound();
   }
 
-  const relatedRecipes = getRelatedRecipes(recipe.relatedSlugs, locale);
+  const { recipe, relatedRecipes } = pageData;
 
   return (
     <main className="recipe-detail-page">

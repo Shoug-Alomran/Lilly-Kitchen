@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { getDictionary, localizeHref, translateCollection } from "@/lib/i18n";
-import { getCollectionCards, getRecipesByCollection } from "@/lib/recipes";
+import { getCollections } from "@/lib/data/collections";
 
 export default function CollectionsPage({ searchParams, locale = "en" }) {
   const labels = getDictionary(locale).collectionsPage;
-  const collectionCards = getCollectionCards(locale);
+  const collectionCards = getCollections(locale);
   const activeCollection = searchParams?.collection || collectionCards[0].title;
-  const recipes = getRecipesByCollection(activeCollection, locale);
+  const activeCollectionCard =
+    collectionCards.find((collection) => collection.title === activeCollection) || collectionCards[0];
 
   return (
     <main className="page-shell">
@@ -35,7 +36,7 @@ export default function CollectionsPage({ searchParams, locale = "en" }) {
           <div className="page-eyebrow">{labels.active}</div>
           <h2 className="display-title">{translateCollection(activeCollection, locale)}</h2>
           <p className="results-copy">
-            {recipes.length} {labels.included}
+            {activeCollectionCard.recipeCount} {labels.included}
           </p>
           <Link href={localizeHref(locale, `/recipes?collection=${encodeURIComponent(activeCollection)}`)} className="btn-primary">
             {labels.viewRecipes}

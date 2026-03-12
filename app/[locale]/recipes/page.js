@@ -1,7 +1,7 @@
-import RecipesPage from "../../recipes/page";
+import RecipesPageContent from "@/components/pages/RecipesPageContent";
 
 export default async function LocalizedRecipesPage({ params, searchParams }) {
   const { locale } = await params;
   const resolvedSearchParams = await searchParams;
-  return <RecipesPage locale={locale} searchParams={resolvedSearchParams} />;
+  return <RecipesPageContent locale={locale} searchParams={resolvedSearchParams} />;
 }

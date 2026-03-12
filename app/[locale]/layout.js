@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import SiteFooter from "@/components/SiteFooter";
-import SiteHeader from "@/components/SiteHeader";
+import SiteHeaderShell from "@/components/SiteHeaderShell";
 import { getDictionary, getDirection, isValidLocale, locales } from "@/lib/i18n";
 
 export function generateStaticParams() {
@@ -19,7 +19,7 @@ export default async function LocaleLayout({ children, params }) {
 
   return (
     <div className="site-shell locale-shell" dir={direction} data-locale={locale}>
-      <SiteHeader locale={locale} dictionary={dictionary} />
+      <SiteHeaderShell locale={locale} dictionary={dictionary} />
       {children}
       <SiteFooter locale={locale} dictionary={dictionary} />
     </div>
