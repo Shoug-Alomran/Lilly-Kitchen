@@ -1907,12 +1907,28 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .ig-marquee {
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ig-marquee::-webkit-scrollbar {
+    display: none;
+  }
+
   .ig-track {
-    animation-duration: 16s;
+    width: max-content;
+    animation: none;
   }
 
   .ig-track-group {
     gap: 10px;
+  }
+
+  .ig-track-group + .ig-track-group {
+    display: none;
   }
 
   .ig-tile {
@@ -2009,10 +2025,6 @@ textarea {
   .hero-title {
     font-size: clamp(3rem, 12vw, 4.4rem);
     max-width: 6ch;
-  }
-
-  .ig-track {
-    animation-duration: 12s;
   }
 
   .ig-track-group {
