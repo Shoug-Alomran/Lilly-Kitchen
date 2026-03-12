@@ -1,6 +1,10 @@
 "use client";
 
-import SiteHeader from "@/components/SiteHeader";
+import dynamic from "next/dynamic";
+
+const SiteHeader = dynamic(() => import("@/components/SiteHeader"), {
+  ssr: false
+});
 
 export default function SiteHeaderShell(props) {
   return <SiteHeader {...props} />;

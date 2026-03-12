@@ -901,6 +901,15 @@ img {
 }
 
 .ig-marquee {
+  /* The homepage rail always renders six tiles per loop. Keeping this in CSS
+     avoids the inline custom-property path that was crashing the dev bundle. */
+  --ig-items: 6;
+  --ig-gap: 12px;
+  --ig-tile-size: min(240px, 42vw);
+  --ig-group-width: calc(
+    (var(--ig-items) * var(--ig-tile-size)) +
+    ((var(--ig-items) - 1) * var(--ig-gap))
+  );
   position: relative;
   overflow: hidden;
   margin-bottom: 24px;
@@ -910,15 +919,17 @@ img {
 
 .ig-track {
   display: flex;
-  width: max-content;
+  gap: var(--ig-gap);
+  width: calc((var(--ig-group-width) * 2) + var(--ig-gap));
   animation: ig-marquee-scroll 36s linear infinite;
   will-change: transform;
 }
 
 .ig-track-group {
   display: flex;
-  gap: 12px;
+  gap: var(--ig-gap);
   flex-shrink: 0;
+  width: var(--ig-group-width);
 }
 
 .ig-marquee:hover .ig-track {
@@ -927,7 +938,7 @@ img {
 
 .ig-tile {
   position: relative;
-  flex: 0 0 min(240px, 42vw);
+  flex: 0 0 var(--ig-tile-size);
   aspect-ratio: 1;
   border-radius: 18px;
   overflow: hidden;
@@ -1021,7 +1032,27 @@ img {
   }
 
   to {
-    transform: translateX(-50%);
+    transform: translateX(calc(-1 * (var(--ig-group-width) + var(--ig-gap))));
+  }
+}
+
+@keyframes ig-marquee-tablet {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-1 * (var(--ig-group-width) + var(--ig-gap))));
+  }
+}
+
+@keyframes ig-marquee-mobile {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-1 * (var(--ig-group-width) + var(--ig-gap))));
   }
 }
 
@@ -1909,24 +1940,17 @@ textarea {
 
   .ig-marquee {
     overflow: hidden;
-    padding-bottom: 10px;
+    padding-bottom: 12px;
+    --ig-gap: 12px;
+    --ig-tile-size: clamp(168px, 20vw, 188px);
   }
 
   .ig-track {
-    width: max-content;
-    animation: ig-marquee-scroll 24s linear infinite;
-  }
-
-  .ig-track-group {
-    gap: 10px;
-  }
-
-  .ig-tile {
-    flex-basis: min(240px, 26vw);
+    animation: ig-marquee-tablet 28s linear infinite;
   }
 
   .instagram-section .section-header {
-    margin-bottom: 28px;
+    margin-bottom: 32px;
   }
 }
 
@@ -2022,16 +2046,7 @@ textarea {
   }
 
   .ig-track {
-    animation-duration: 18s;
-  }
-
-  .ig-track-group {
-    gap: 8px;
-  }
-
-  .ig-tile {
-    flex-basis: min(220px, 58vw);
-    border-radius: 16px;
+    animation: ig-marquee-mobile 22s linear infinite;
   }
 
   .ig-handle {
@@ -2052,6 +2067,15 @@ textarea {
     width: 56px;
     height: 56px;
     font-size: 28px;
+  }
+
+  .ig-marquee {
+    --ig-gap: 10px;
+    --ig-tile-size: clamp(188px, 62vw, 228px);
+  }
+
+  .ig-tile {
+    border-radius: 16px;
   }
 
   .account-card__actions .button,
@@ -2181,14 +2205,12 @@ textarea {
 
   .ig-marquee {
     padding-bottom: 8px;
+    --ig-gap: 10px;
+    --ig-tile-size: 74vw;
   }
 
   .ig-track {
-    animation-duration: 16s;
-  }
-
-  .ig-tile {
-    flex-basis: 68vw;
+    animation-duration: 20s;
   }
 
   .ig-overlay {
