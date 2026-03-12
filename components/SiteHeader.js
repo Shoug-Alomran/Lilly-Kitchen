@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -18,6 +18,24 @@ export default function SiteHeader() {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    function handleScroll() {
+      setIsScrolled(window.scrollY > 24);
+    }
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setIsSearchOpen(false);
+  }, [pathname]);
 
   function handleSearchSubmit(event) {
     event.preventDefault();
@@ -34,8 +52,10 @@ export default function SiteHeader() {
     setIsSearchOpen(false);
   }
 
+  const isTransparent = pathname === "/" && !isScrolled && !isMenuOpen && !isSearchOpen;
+
   return (
-    <header className="site-header">
+    <header className={`site-header ${isTransparent ? "is-transparent" : ""}`}>
       <div className="site-header__inner">
         <Link href="/" className="site-brand">
           Lilly Kitchen
@@ -77,10 +97,32 @@ export default function SiteHeader() {
               Search
             </button>
           </form>
+          <button
+            type="button"
+            className="site-menu-toggle"
+            aria-expanded={isMenuOpen}
+            aria-label="Toggle navigation menu"
+            onClick={() => setIsMenuOpen((value) => !value)}
+          >
+            Menu
+          </button>
           <Link href="/account" className="site-avatar" aria-label="Account">
             L
           </Link>
         </div>
+      </div>
+
+      <div className={`site-mobile-panel ${isMenuOpen ? "is-open" : ""}`}>
+        <nav className="site-mobile-nav" aria-label="Mobile">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href} className={pathname === item.href ? "is-active" : ""}>
+              {item.label}
+            </Link>
+          ))}
+          <Link href="/account">Account</Link>
+          <Link href="/login">Login</Link>
+          <Link href="/signup">Sign Up</Link>
+        </nav>
       </div>
     </header>
   );

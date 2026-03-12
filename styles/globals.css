@@ -63,6 +63,14 @@ img {
   background: rgba(250, 248, 245, 0.92);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--sand);
+  transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.site-header.is-transparent {
+  background: transparent;
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 .site-header__inner {
@@ -82,6 +90,18 @@ img {
   font-size: 22px;
   font-weight: 400;
   letter-spacing: 0.02em;
+}
+
+.site-header.is-transparent .site-brand,
+.site-header.is-transparent .site-nav a,
+.site-header.is-transparent .site-search__button,
+.site-header.is-transparent .site-menu-toggle {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.site-header.is-transparent .site-nav a.is-active,
+.site-header.is-transparent .site-nav a:hover {
+  color: #ffd8c4;
 }
 
 .site-nav {
@@ -142,6 +162,15 @@ img {
   font-size: 13px;
 }
 
+.site-menu-toggle {
+  display: none;
+  border: 0;
+  background: transparent;
+  color: var(--warm-gray);
+  padding: 0;
+  font-size: 13px;
+}
+
 .site-avatar,
 .author-avatar {
   width: 38px;
@@ -155,6 +184,16 @@ img {
   color: var(--terracotta);
   font-family: var(--font-display);
   font-size: 18px;
+}
+
+.site-header.is-transparent .site-avatar {
+  background: rgba(240, 217, 204, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+}
+
+.site-mobile-panel {
+  display: none;
 }
 
 .hero {
@@ -1458,33 +1497,88 @@ textarea {
   }
 
   .site-header__inner {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    align-items: flex-start;
+    min-height: 72px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    align-items: center;
   }
 
   .site-nav {
-    justify-content: flex-start;
+    display: none;
   }
 
   .site-search {
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+
+  .site-search input {
+    min-width: 0;
     width: 100%;
-    justify-content: space-between;
+    max-width: 120px;
+  }
+
+  .site-menu-toggle {
+    display: inline-flex;
+  }
+
+  .site-mobile-panel {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    background: rgba(250, 248, 245, 0.98);
+    border-bottom: 1px solid transparent;
+    transition: max-height 0.25s ease;
+  }
+
+  .site-mobile-panel.is-open {
+    max-height: 420px;
+    border-bottom-color: var(--sand);
+  }
+
+  .site-mobile-nav {
+    display: grid;
+    gap: 12px;
+    padding: 0 20px 20px;
+  }
+
+  .site-mobile-nav a {
+    color: var(--warm-gray);
+    font-size: 15px;
+  }
+
+  .site-mobile-nav a.is-active {
+    color: var(--terracotta);
   }
 
   .hero {
-    min-height: 72vh;
+    min-height: 88vh;
   }
 
   .hero-content {
     left: 20px;
     right: 20px;
-    bottom: 10%;
+    bottom: 8%;
+    max-width: 360px;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 12vw, 4.4rem);
+    max-width: 6ch;
+  }
+
+  .hero-subtitle {
+    max-width: 20ch;
+    font-size: 20px;
   }
 
   .hero-plate {
-    width: 260px;
-    height: 260px;
+    width: 240px;
+    height: 240px;
+    left: 68%;
+    top: 58%;
   }
 
   .recipe-detail-plate {
@@ -1521,5 +1615,76 @@ textarea {
 
   .instr-step {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header__inner {
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 10px;
+  }
+
+  .site-brand {
+    font-size: 18px;
+  }
+
+  .site-search {
+    padding-left: 10px;
+  }
+
+  .site-search input {
+    max-width: 92px;
+  }
+
+  .site-avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  .hero {
+    min-height: 100svh;
+  }
+
+  .hero-content {
+    left: 16px;
+    right: 16px;
+    bottom: 7%;
+    max-width: 300px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.75rem, 15vw, 4rem);
+    max-width: 5ch;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+  }
+
+  .hero-plate {
+    width: 190px;
+    height: 190px;
+    left: 72%;
+    top: 58%;
+  }
+
+  .hero-garnish-right {
+    right: 8%;
+    top: 23%;
+    width: 80px;
+    height: 54px;
+  }
+
+  .hero-garnish-left {
+    left: 28%;
+    bottom: 24%;
+    width: 62px;
+    height: 40px;
+  }
+
+  .hero-scroll {
+    display: none;
   }
 }
