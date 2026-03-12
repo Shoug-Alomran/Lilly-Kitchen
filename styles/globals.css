@@ -1908,29 +1908,17 @@ textarea {
   }
 
   .ig-marquee {
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     padding-bottom: 10px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .ig-marquee::-webkit-scrollbar {
-    display: none;
   }
 
   .ig-track {
     width: max-content;
-    animation: none;
-    transform: none !important;
+    animation: ig-marquee-scroll 24s linear infinite;
   }
 
   .ig-track-group {
     gap: 10px;
-  }
-
-  .ig-track-group + .ig-track-group {
-    display: none;
   }
 
   .ig-tile {
@@ -2034,19 +2022,15 @@ textarea {
   }
 
   .ig-track {
-    transform: none !important;
+    animation-duration: 18s;
   }
 
   .ig-track-group {
     gap: 8px;
   }
 
-  .ig-track-group + .ig-track-group {
-    display: none;
-  }
-
   .ig-tile {
-    flex-basis: min(250px, 68vw);
+    flex-basis: min(220px, 58vw);
     border-radius: 16px;
   }
 
@@ -2199,8 +2183,12 @@ textarea {
     padding-bottom: 8px;
   }
 
+  .ig-track {
+    animation-duration: 16s;
+  }
+
   .ig-tile {
-    flex-basis: 78vw;
+    flex-basis: 68vw;
   }
 
   .ig-overlay {
