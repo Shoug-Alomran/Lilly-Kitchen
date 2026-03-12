@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
           <SiteHeader />
           {children}
           <SiteFooter />
+          <Analytics />
         </div>
       </body>
     </html>
