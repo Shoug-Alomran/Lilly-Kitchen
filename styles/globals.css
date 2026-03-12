@@ -1876,7 +1876,7 @@ textarea {
     linear-gradient(140deg, #1d314a 0%, #35577d 45%, #8f6a2b 100%);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1400px) {
   .featured-grid,
   .story-grid,
   .collection-grid,
@@ -1907,16 +1907,38 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .ig-marquee {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ig-marquee::-webkit-scrollbar {
+    display: none;
+  }
+
   .ig-track {
-    animation-duration: 18s;
+    width: max-content;
+    animation: none;
+    transform: none !important;
   }
 
   .ig-track-group {
     gap: 10px;
   }
 
+  .ig-track-group + .ig-track-group {
+    display: none;
+  }
+
   .ig-tile {
-    flex-basis: min(200px, 28vw);
+    flex-basis: min(240px, 26vw);
+  }
+
+  .instagram-section .section-header {
+    margin-bottom: 28px;
   }
 }
 
@@ -2011,20 +2033,8 @@ textarea {
     max-width: 6ch;
   }
 
-  .ig-marquee {
-    overflow-x: auto;
-    padding-bottom: 10px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .ig-marquee::-webkit-scrollbar {
-    display: none;
-  }
-
   .ig-track {
-    width: max-content;
-    animation: none;
+    transform: none !important;
   }
 
   .ig-track-group {
@@ -2190,7 +2200,7 @@ textarea {
   }
 
   .ig-tile {
-    flex-basis: 74vw;
+    flex-basis: 78vw;
   }
 
   .ig-overlay {
