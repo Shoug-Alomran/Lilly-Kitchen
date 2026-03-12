@@ -15,8 +15,8 @@ export default function RecipesPage({ searchParams, locale = "en" }) {
   const activeCollection = searchParams?.collection || "";
   const searchQuery = searchParams?.search || "";
   const baseRecipes = activeCollection
-    ? getRecipesByCollection(activeCollection)
-    : getRecipesByCategory(activeCategory);
+    ? getRecipesByCollection(activeCollection, locale)
+    : getRecipesByCategory(activeCategory, locale);
   const recipes = searchRecipes(baseRecipes, searchQuery);
 
   return (
@@ -39,7 +39,7 @@ export default function RecipesPage({ searchParams, locale = "en" }) {
               name="search"
               defaultValue={searchQuery}
               placeholder={labels.searchPlaceholder}
-              aria-label="Search recipes"
+              aria-label={labels.searchPlaceholder}
             />
             {activeCategory !== "All" ? <input type="hidden" name="category" value={activeCategory} /> : null}
             {activeCollection ? <input type="hidden" name="collection" value={activeCollection} /> : null}

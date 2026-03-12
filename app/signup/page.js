@@ -29,12 +29,12 @@ export default function SignupPage({ locale = "en" }) {
         }
       });
 
-      setSuccessMessage("Account created. We sent a confirmation link to your email. Please verify your email, then sign in.");
+      setSuccessMessage(labels.success);
       setFullName("");
       setEmail("");
       setPassword("");
     } catch (error) {
-      setErrorMessage(error.message || "Unable to create account.");
+      setErrorMessage(error.message || labels.error);
     } finally {
       setIsSubmitting(false);
     }
@@ -68,7 +68,7 @@ export default function SignupPage({ locale = "en" }) {
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
+              placeholder={labels.emailPlaceholder}
               required
             />
           </label>

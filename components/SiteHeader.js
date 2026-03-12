@@ -102,7 +102,7 @@ export default function SiteHeader({ locale = "en", dictionary }) {
           {dictionary.brand}
         </Link>
 
-        <nav className="site-nav" aria-label="Primary">
+        <nav className="site-nav" aria-label={dictionary.nav.primaryNav}>
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -121,8 +121,8 @@ export default function SiteHeader({ locale = "en", dictionary }) {
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search recipes..."
-                aria-label="Search recipes"
+                placeholder={dictionary.nav.searchPlaceholder}
+                aria-label={dictionary.nav.searchAria}
                 autoFocus
               />
             ) : null}
@@ -146,7 +146,7 @@ export default function SiteHeader({ locale = "en", dictionary }) {
             type="button"
             className="site-menu-toggle"
             aria-expanded={isMenuOpen}
-            aria-label="Toggle navigation menu"
+            aria-label={dictionary.nav.menuToggle}
             onClick={() => setIsMenuOpen((value) => !value)}
           >
             {dictionary.nav.menu}
@@ -155,7 +155,7 @@ export default function SiteHeader({ locale = "en", dictionary }) {
             <button
               type="button"
               className="site-avatar"
-              aria-label="Account"
+              aria-label={dictionary.nav.accountAria}
               aria-expanded={isAccountMenuOpen}
               onClick={() => setIsAccountMenuOpen((value) => !value)}
             >
@@ -185,7 +185,7 @@ export default function SiteHeader({ locale = "en", dictionary }) {
       </div>
 
       <div className={`site-mobile-panel ${isMenuOpen ? "is-open" : ""}`}>
-        <nav className="site-mobile-nav" aria-label="Mobile">
+        <nav className="site-mobile-nav" aria-label={dictionary.nav.mobileNav}>
           {navItems.map((item) => (
             <Link
               key={item.href}

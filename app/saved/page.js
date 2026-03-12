@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import RecipeCard from "@/components/RecipeCard";
-import { localizeHref } from "@/lib/i18n";
-import { getRecipeBySlug } from "@/lib/recipes";
+import { getDictionary, localizeHref } from "@/lib/i18n";
+import { getAllRecipes, getRecipeBySlug } from "@/lib/recipes";
 import {
   getCurrentUser,
   getFolders,
@@ -14,9 +14,11 @@ import {
 } from "@/lib/supabase";
 
 export default function SavedPage({ locale = "en" }) {
+  const labels = getDictionary(locale).saved;
   const [user, setUser] = useState(null);
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [folders, setFolders] = useState([]);
+  const [availableRecipes, setAvailableRecipes] = useState([]);
   const [recipeSlug, setRecipeSlug] = useState("");
   const [folderId, setFolderId] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,14 +37,16 @@ export default function SavedPage({ locale = "en" }) {
       if (!currentUser) {
         setSavedRecipes([]);
         setFolders([]);
+        setAvailableRecipes(getAllRecipes(locale));
         return;
       }
 
       const [savedData, folderData] = await Promise.all([getSavedRecipes(), getFolders()]);
       setSavedRecipes(savedData);
       setFolders(folderData);
+      setAvailableRecipes(getAllRecipes(locale));
     } catch (error) {
-      setErrorMessage(error.message || "Unable to load saved recipes.");
+      setErrorMessage(error.message || labels.loadError);
     } finally {
       setIsLoading(false);
     }
@@ -65,10 +69,10 @@ export default function SavedPage({ locale = "en" }) {
       });
       setRecipeSlug("");
       setFolderId("");
-      setSuccessMessage("Recipe saved.");
+      setSuccessMessage(labels.savedMessage);
       await loadSavedRecipes();
     } catch (error) {
-      setErrorMessage(error.message || "Unable to save recipe.");
+      setErrorMessage(error.message || labels.saveError);
     } finally {
       setIsSubmitting(false);
     }
@@ -83,10 +87,10 @@ export default function SavedPage({ locale = "en" }) {
         recipeSlug: savedRecipe.recipe_slug,
         folderId: savedRecipe.folder_id
       });
-      setSuccessMessage("Saved recipe removed.");
+      setSuccessMessage(labels.removedMessage);
       await loadSavedRecipes();
     } catch (error) {
-      setErrorMessage(error.message || "Unable to remove saved recipe.");
+      setErrorMessage(error.message || labels.removeError);
     }
   }
 
@@ -94,47 +98,52 @@ export default function SavedPage({ locale = "en" }) {
     <main className="page-shell">
       <section className="page-hero">
         <div>
-          <div className="page-eyebrow">Saved Dashboard</div>
-          <h1 className="page-title">My Saved Recipes</h1>
-          <p className="page-subtitle">Collect recipes you love, then organize them into folders for later.</p>
+          <div className="page-eyebrow">{labels.eyebrow}</div>
+          <h1 className="page-title">{labels.title}</h1>
+          <p className="page-subtitle">{labels.subtitle}</p>
         </div>
         <Link href={localizeHref(locale, "/folders")} className="btn-primary">
-          + New Folder
+          {labels.newFolder}
         </Link>
       </section>
 
       <section className="section-shell">
         {user ? (
           <div className="results-copy">
-            🔖 {savedRecipes.length} Saved Recipes · 📁 {folders.length} Folders · Member area ready for curation.
+            🔖 {savedRecipes.length} {labels.stats} · 📁 {folders.length} {labels.statsFolders} · {labels.statsSuffix}
           </div>
         ) : null}
 
         {!user && !isLoading ? (
           <p className="status status-muted">
-            You need to <Link href={localizeHref(locale, "/login")}>log in</Link> before using saved recipes.
+            {labels.loginRequired} <Link href={localizeHref(locale, "/login")}>{labels.loginLink}</Link> {labels.loginSuffix}
           </p>
         ) : null}
 
         <form className="stack-md panel" onSubmit={handleSave}>
           <label className="field">
-            <span>Recipe slug</span>
-            <input
-              type="text"
+            <span>{labels.recipeLabel}</span>
+            <select
               value={recipeSlug}
               onChange={(event) => setRecipeSlug(event.target.value)}
-              placeholder="slow-roasted-lamb-pomegranate-glaze"
               required
-            />
+            >
+              <option value="">{labels.recipePlaceholder}</option>
+              {availableRecipes.map((recipe) => (
+                <option key={recipe.slug} value={recipe.slug}>
+                  {recipe.title}
+                </option>
+              ))}
+            </select>
           </label>
 
           <label className="field">
-            <span>Folder (optional)</span>
+            <span>{labels.folderOptional}</span>
             <select
               value={folderId}
               onChange={(event) => setFolderId(event.target.value)}
             >
-              <option value="">Save without a folder</option>
+              <option value="">{labels.withoutFolder}</option>
               {folders.map((folder) => (
                 <option key={folder.id} value={folder.id}>
                   {folder.name}
@@ -147,16 +156,16 @@ export default function SavedPage({ locale = "en" }) {
           {successMessage ? <p className="status status-success">{successMessage}</p> : null}
 
           <button type="submit" className="button" disabled={isSubmitting || !user}>
-            {isSubmitting ? "Saving..." : "Save Recipe"}
+            {isSubmitting ? labels.saving : labels.saveRecipe}
           </button>
         </form>
 
         {folders.length > 0 ? (
           <>
             <div className="section-header">
-              <h2 className="section-title display-title">My Folders</h2>
+              <h2 className="section-title display-title">{labels.foldersTitle}</h2>
               <Link href={localizeHref(locale, "/folders")} className="section-link">
-                See All Folders →
+                {labels.seeAllFolders}
               </Link>
             </div>
 
@@ -171,36 +180,36 @@ export default function SavedPage({ locale = "en" }) {
                   </div>
                   <div className="folder-info">
                     <div className="folder-name">{folder.name}</div>
-                    <div className="folder-count">{folder.description || "Open folder"}</div>
+                    <div className="folder-count">{folder.description || getDictionary(locale).folders.openFolder}</div>
                   </div>
                 </Link>
               ))}
 
               <Link href={localizeHref(locale, "/folders")} className="new-folder-card">
                 <div className="new-folder-icon">+</div>
-                <span>Create New Folder</span>
+                <span>{labels.createNewFolder}</span>
               </Link>
             </div>
           </>
         ) : null}
 
         <div className="section-header">
-          <h2 className="section-title display-title">Recently Saved</h2>
+          <h2 className="section-title display-title">{labels.recentlySaved}</h2>
           <Link href={localizeHref(locale, "/folders")} className="section-link">
-            See All Folders →
+            {labels.seeAllFolders}
           </Link>
         </div>
 
-        {isLoading ? <p className="status status-muted">Loading saved recipes...</p> : null}
+        {isLoading ? <p className="status status-muted">{labels.loading}</p> : null}
 
         {!isLoading && user && savedRecipes.length === 0 ? (
-          <p className="status status-muted">No saved recipes yet.</p>
+          <p className="status status-muted">{labels.empty}</p>
         ) : null}
 
         {savedRecipes.length > 0 ? (
           <div className="recipe-grid">
             {savedRecipes.map((savedRecipe) => {
-              const recipe = getRecipeBySlug(savedRecipe.recipe_slug);
+              const recipe = getRecipeBySlug(savedRecipe.recipe_slug, locale);
 
               if (!recipe) {
                 return null;
@@ -212,14 +221,14 @@ export default function SavedPage({ locale = "en" }) {
                     recipe={recipe}
                     saved
                     locale={locale}
-                    subtitle={savedRecipe.folders?.name ? `In ${savedRecipe.folders.name}` : "Saved"}
+                    subtitle={savedRecipe.folders?.name ? `${labels.inFolder} ${savedRecipe.folders.name}` : labels.savedLabel}
                   />
                   <button
                     type="button"
                     className="btn-ghost"
                     onClick={() => handleRemove(savedRecipe)}
                   >
-                    Remove
+                    {labels.remove}
                   </button>
                 </div>
               );

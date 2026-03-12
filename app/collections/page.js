@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { getDictionary, localizeHref, translateCollection } from "@/lib/i18n";
-import { collectionCards, getRecipesByCollection } from "@/lib/recipes";
+import { getCollectionCards, getRecipesByCollection } from "@/lib/recipes";
 
 export default function CollectionsPage({ searchParams, locale = "en" }) {
   const labels = getDictionary(locale).collectionsPage;
+  const collectionCards = getCollectionCards(locale);
   const activeCollection = searchParams?.collection || collectionCards[0].title;
-  const recipes = getRecipesByCollection(activeCollection);
+  const recipes = getRecipesByCollection(activeCollection, locale);
 
   return (
     <main className="page-shell">

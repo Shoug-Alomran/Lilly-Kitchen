@@ -24,14 +24,14 @@ export default function LoginPage({ locale = "en" }) {
 
     try {
       await signInWithEmail({ email, password });
-      setSuccessMessage("Signed in successfully. Redirecting to your account.");
+      setSuccessMessage(labels.success);
       router.push(localizeHref(locale, "/account"));
       router.refresh();
     } catch (error) {
       if (error.message?.toLowerCase().includes("email not confirmed")) {
-        setErrorMessage("Please confirm your email using the link we sent, then try signing in again.");
+        setErrorMessage(labels.confirmEmail);
       } else {
-        setErrorMessage(error.message || "Unable to sign in.");
+        setErrorMessage(error.message || labels.signInError);
       }
     } finally {
       setIsSubmitting(false);
@@ -51,7 +51,7 @@ export default function LoginPage({ locale = "en" }) {
       await sendPasswordResetEmail(email);
       setSuccessMessage(labels.resetSent);
     } catch (error) {
-      setErrorMessage(error.message || "Unable to send password reset email.");
+      setErrorMessage(error.message || labels.resetError);
     } finally {
       setIsResettingPassword(false);
     }
@@ -75,7 +75,7 @@ export default function LoginPage({ locale = "en" }) {
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
+              placeholder={labels.emailPlaceholder}
               required
             />
           </label>
@@ -86,7 +86,7 @@ export default function LoginPage({ locale = "en" }) {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="Enter your password"
+              placeholder={labels.passwordPlaceholder}
               required
             />
           </label>

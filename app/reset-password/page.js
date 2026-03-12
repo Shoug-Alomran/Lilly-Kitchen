@@ -23,15 +23,15 @@ export default function ResetPasswordPage({ locale = "en" }) {
 
     try {
       if (password.length < 6) {
-        throw new Error("Your new password must be at least 6 characters long.");
+        throw new Error(labels.passwordTooShort);
       }
 
       if (password !== confirmPassword) {
-        throw new Error("Your new password and confirmation do not match.");
+        throw new Error(labels.mismatch);
       }
 
       await updateUserPassword(password);
-      setSuccessMessage("Your password has been reset. Redirecting to login...");
+      setSuccessMessage(labels.success);
       setPassword("");
       setConfirmPassword("");
 
@@ -39,9 +39,7 @@ export default function ResetPasswordPage({ locale = "en" }) {
         router.push(localizeHref(locale, "/login"));
       }, 1200);
     } catch (error) {
-      setErrorMessage(
-        error.message || "Unable to reset password. Open the reset link from your email again and try once more."
-      );
+      setErrorMessage(error.message || labels.error);
     } finally {
       setIsSubmitting(false);
     }
@@ -65,7 +63,7 @@ export default function ResetPasswordPage({ locale = "en" }) {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="Enter a new password"
+              placeholder={labels.enterPasswordPlaceholder}
               minLength={6}
               required
             />
@@ -77,7 +75,7 @@ export default function ResetPasswordPage({ locale = "en" }) {
               type="password"
               value={confirmPassword}
               onChange={(event) => setConfirmPassword(event.target.value)}
-              placeholder="Confirm your new password"
+              placeholder={labels.confirmPasswordPlaceholder}
               minLength={6}
               required
             />

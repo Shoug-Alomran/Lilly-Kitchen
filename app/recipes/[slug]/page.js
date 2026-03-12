@@ -8,13 +8,13 @@ import { getRecipeBySlug, getRelatedRecipes } from "@/lib/recipes";
 export default function RecipeDetailPage({ params, locale = "en" }) {
   const dictionary = getDictionary(locale);
   const labels = dictionary.recipeDetail;
-  const recipe = getRecipeBySlug(params.slug);
+  const recipe = getRecipeBySlug(params.slug, locale);
 
   if (!recipe) {
     notFound();
   }
 
-  const relatedRecipes = getRelatedRecipes(recipe.relatedSlugs);
+  const relatedRecipes = getRelatedRecipes(recipe.relatedSlugs, locale);
 
   return (
     <main className="recipe-detail-page">

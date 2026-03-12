@@ -1726,6 +1726,10 @@ textarea {
   .account-grid {
     grid-template-columns: 1fr;
   }
+
+  .ig-track {
+    animation-duration: 22s;
+  }
 }
 
 @media (max-width: 800px) {
@@ -1817,6 +1821,10 @@ textarea {
   .hero-title {
     font-size: clamp(3rem, 12vw, 4.4rem);
     max-width: 6ch;
+  }
+
+  .ig-track {
+    animation-duration: 18s;
   }
 
   .account-summary__identity {

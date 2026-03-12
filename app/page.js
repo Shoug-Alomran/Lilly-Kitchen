@@ -1,20 +1,21 @@
 import Link from "next/link";
 import InstagramRail from "@/components/InstagramRail";
 import RecipeCard from "@/components/RecipeCard";
-import { getDictionary, localizeHref, translateCategory } from "@/lib/i18n";
-import { categoryCollection, collectionCards, getFeaturedRecipes, getNewestRecipes } from "@/lib/recipes";
+import { getDictionary, localizeHref, translateCategory, translateCollection } from "@/lib/i18n";
+import { categoryCollection, getCollectionCards, getFeaturedRecipes, getNewestRecipes } from "@/lib/recipes";
 
 export default function HomePage({ locale = "en" }) {
   const dictionary = getDictionary(locale);
   const labels = dictionary.home;
-  const featuredRecipes = getFeaturedRecipes();
-  const newestRecipes = getNewestRecipes();
+  const featuredRecipes = getFeaturedRecipes(locale);
+  const newestRecipes = getNewestRecipes(locale);
   const heroRecipe = featuredRecipes[0];
   const sideRecipes = featuredRecipes.slice(1);
+  const collectionCards = getCollectionCards(locale);
   const instagramItems = [1, 2, 3, 5, 4, 6].map((item) => ({
     id: item,
     href: "https://www.instagram.com/lilly.kitchen1/",
-    label: `Instagram post ${item}`,
+    label: `${labels.instagramPost} ${item}`,
     className: `food-bg-${item}`,
     likes: 900 + item * 120
   }));
@@ -164,11 +165,11 @@ export default function HomePage({ locale = "en" }) {
         <div className="seasonal-images">
           {collectionCards.map((collection) => (
             <Link key={collection.title} href={localizeHref(locale, collection.href)} className={`seasonal-img ${collection.className}`}>
-              <span>{collection.title}</span>
+              <span>{translateCollection(collection.title, locale)}</span>
             </Link>
           ))}
           <Link href={localizeHref(locale, "/collections?collection=Easy%20Breakfast")} className="seasonal-img food-bg-4">
-            <span>Easy Breakfast</span>
+            <span>{translateCollection("Easy Breakfast", locale)}</span>
           </Link>
         </div>
       </section>
@@ -189,7 +190,7 @@ export default function HomePage({ locale = "en" }) {
         <h2 className="newsletter-title">{labels.newsletterTitle}</h2>
         <p className="newsletter-sub">{labels.newsletterSub}</p>
         <div className="newsletter-form">
-          <input className="newsletter-input" type="email" placeholder={locale === "ar" ? "your@email.com" : "your@email.com"} />
+          <input className="newsletter-input" type="email" placeholder={labels.emailPlaceholder} />
           <Link href={localizeHref(locale, "/signup")} className="btn-primary">
             {labels.subscribe}
           </Link>

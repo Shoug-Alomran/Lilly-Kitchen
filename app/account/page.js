@@ -41,11 +41,11 @@ export default function AccountPage({ locale = "en" }) {
           return;
         }
 
-        const profile = await getProfile();
-        setFullName(profile?.full_name || "");
-        setEmail(currentUser.email || "");
-      } catch (error) {
-        setErrorMessage(error.message || "Unable to load account details.");
+      const profile = await getProfile();
+      setFullName(profile?.full_name || "");
+      setEmail(currentUser.email || "");
+    } catch (error) {
+      setErrorMessage(error.message || labels.loadError);
       } finally {
         setIsLoading(false);
       }
@@ -64,9 +64,9 @@ export default function AccountPage({ locale = "en" }) {
       await updateProfile({
         full_name: fullName
       });
-      setSuccessMessage("Profile updated.");
+      setSuccessMessage(labels.profileUpdated);
     } catch (error) {
-      setErrorMessage(error.message || "Unable to update profile.");
+      setErrorMessage(error.message || labels.profileError);
     } finally {
       setIsProfileSubmitting(false);
     }
@@ -80,9 +80,9 @@ export default function AccountPage({ locale = "en" }) {
 
     try {
       await updateUserEmail(email);
-      setSuccessMessage("We sent a confirmation link to your new email address. Please confirm the change from your inbox.");
+      setSuccessMessage(labels.emailUpdated);
     } catch (error) {
-      setErrorMessage(error.message || "Unable to update email.");
+      setErrorMessage(error.message || labels.emailError);
     } finally {
       setIsEmailSubmitting(false);
     }
@@ -97,9 +97,9 @@ export default function AccountPage({ locale = "en" }) {
       setUser(null);
       setFullName("");
       setEmail("");
-      setSuccessMessage("Signed out successfully.");
+      setSuccessMessage(labels.signedOut);
     } catch (error) {
-      setErrorMessage(error.message || "Unable to sign out.");
+      setErrorMessage(error.message || labels.signOutError);
     }
   }
 
@@ -111,19 +111,19 @@ export default function AccountPage({ locale = "en" }) {
 
     try {
       if (password.length < 6) {
-        throw new Error("Your new password must be at least 6 characters long.");
+        throw new Error(labels.passwordTooShort);
       }
 
       if (password !== confirmPassword) {
-        throw new Error("Your new password and confirmation do not match.");
+        throw new Error(labels.passwordMismatch);
       }
 
       await updateUserPassword(password);
       setPassword("");
       setConfirmPassword("");
-      setSuccessMessage("Password updated successfully.");
+      setSuccessMessage(labels.passwordUpdated);
     } catch (error) {
-      setErrorMessage(error.message || "Unable to update password.");
+      setErrorMessage(error.message || labels.passwordError);
     } finally {
       setIsPasswordSubmitting(false);
     }
@@ -131,7 +131,7 @@ export default function AccountPage({ locale = "en" }) {
 
   async function handleDeleteAccount() {
     const confirmed = window.confirm(
-      "Are you sure you want to permanently delete your Lilly Kitchen account? This cannot be undone."
+      labels.deleteConfirm
     );
 
     if (!confirmed) {
@@ -148,9 +148,9 @@ export default function AccountPage({ locale = "en" }) {
       setUser(null);
       setFullName("");
       setEmail("");
-      setSuccessMessage("Your account has been deleted.");
+      setSuccessMessage(labels.deleted);
     } catch (error) {
-      setErrorMessage(error.message || "Unable to delete account.");
+      setErrorMessage(error.message || labels.deleteError);
     } finally {
       setIsDeleting(false);
     }
@@ -170,7 +170,7 @@ export default function AccountPage({ locale = "en" }) {
 
         {!user && !isLoading ? (
           <p className="status status-muted">
-            {labels.noSession} <Link href={localizeHref(locale, "/login")}>{labels.manageAccount}</Link> to manage your account.
+            {labels.noSession} <Link href={localizeHref(locale, "/login")}>{labels.manageAccount}</Link> {labels.noSessionSuffix}
           </p>
         ) : null}
 
@@ -230,7 +230,7 @@ export default function AccountPage({ locale = "en" }) {
                     type="email"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    placeholder="you@example.com"
+                    placeholder={labels.emailPlaceholder}
                     required
                   />
                 </label>

@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import RecipeCard from "@/components/RecipeCard";
-import { localizeHref } from "@/lib/i18n";
+import { getDictionary, localizeHref } from "@/lib/i18n";
 import { getRecipeBySlug } from "@/lib/recipes";
 import { getCurrentUser, getFolderById, getSavedRecipesByFolder } from "@/lib/supabase";
 
 export default function FolderDetailPage({ locale = "en" }) {
+  const labels = getDictionary(locale).folderDetail;
   const params = useParams();
   const folderId = params.folderId;
   const [user, setUser] = useState(null);
@@ -38,7 +39,7 @@ export default function FolderDetailPage({ locale = "en" }) {
         setFolder(folderData);
         setSavedRecipes(savedRecipesData);
       } catch (error) {
-        setErrorMessage(error.message || "Unable to load this folder.");
+        setErrorMessage(error.message || labels.loadError);
       } finally {
         setIsLoading(false);
       }
@@ -53,12 +54,12 @@ export default function FolderDetailPage({ locale = "en" }) {
     <main className="page-shell">
       <section className="page-hero">
         <div>
-          <div className="page-eyebrow">Folder Detail</div>
-          <h1 className="page-title">{folder?.name || "Folder"}</h1>
-          <p className="page-subtitle">Review and revisit the recipes saved into this collection.</p>
+          <div className="page-eyebrow">{labels.eyebrow}</div>
+          <h1 className="page-title">{folder?.name || labels.fallbackTitle}</h1>
+          <p className="page-subtitle">{labels.subtitle}</p>
         </div>
         <Link href={localizeHref(locale, "/recipes")} className="btn-primary">
-          + Add More Recipes
+          {labels.addMore}
         </Link>
       </section>
 
@@ -66,21 +67,21 @@ export default function FolderDetailPage({ locale = "en" }) {
 
         {!user && !isLoading ? (
           <p className="status status-muted">
-            You need to <Link href={localizeHref(locale, "/login")}>log in</Link> before viewing a folder.
+            {labels.loginRequired} <Link href={localizeHref(locale, "/login")}>{labels.loginLink}</Link> {labels.loginSuffix}
           </p>
         ) : null}
 
         {errorMessage ? <p className="status status-error">{errorMessage}</p> : null}
-        {isLoading ? <p className="status status-muted">Loading folder...</p> : null}
+        {isLoading ? <p className="status status-muted">{labels.loading}</p> : null}
 
         {folder ? (
           <section className="stack-md">
             <div className="recipe-grid">
               {savedRecipes.length === 0 ? (
-                <p className="status status-muted">This folder does not contain any saved recipes yet.</p>
+                <p className="status status-muted">{labels.empty}</p>
               ) : (
                 savedRecipes.map((savedRecipe) => {
-                  const recipe = getRecipeBySlug(savedRecipe.recipe_slug);
+                  const recipe = getRecipeBySlug(savedRecipe.recipe_slug, locale);
 
                   if (!recipe) {
                     return null;

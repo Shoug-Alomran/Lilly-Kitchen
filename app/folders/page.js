@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { localizeHref } from "@/lib/i18n";
+import { getDictionary, localizeHref } from "@/lib/i18n";
 import { createFolder, deleteFolder, getCurrentUser, getFolders } from "@/lib/supabase";
 
 export default function FoldersPage({ locale = "en" }) {
+  const labels = getDictionary(locale).folders;
   const [user, setUser] = useState(null);
   const [folders, setFolders] = useState([]);
   const [name, setName] = useState("");
@@ -31,7 +32,7 @@ export default function FoldersPage({ locale = "en" }) {
       const data = await getFolders();
       setFolders(data);
     } catch (error) {
-      setErrorMessage(error.message || "Unable to load folders.");
+      setErrorMessage(error.message || labels.loadError);
     } finally {
       setIsLoading(false);
     }
@@ -51,10 +52,10 @@ export default function FoldersPage({ locale = "en" }) {
       await createFolder({ name, description });
       setName("");
       setDescription("");
-      setSuccessMessage("Folder created.");
+      setSuccessMessage(labels.createdMessage);
       await loadFolders();
     } catch (error) {
-      setErrorMessage(error.message || "Unable to create folder.");
+      setErrorMessage(error.message || labels.createError);
     } finally {
       setIsSubmitting(false);
     }
@@ -66,10 +67,10 @@ export default function FoldersPage({ locale = "en" }) {
 
     try {
       await deleteFolder(folderId);
-      setSuccessMessage("Folder deleted.");
+      setSuccessMessage(labels.deletedMessage);
       await loadFolders();
     } catch (error) {
-      setErrorMessage(error.message || "Unable to delete folder.");
+      setErrorMessage(error.message || labels.deleteError);
     }
   }
 
@@ -77,40 +78,40 @@ export default function FoldersPage({ locale = "en" }) {
     <main className="page-shell">
       <section className="page-hero">
         <div>
-          <div className="page-eyebrow">Collections</div>
-          <h1 className="page-title">My Folders</h1>
-          <p className="page-subtitle">Organize your saved recipes into custom collections.</p>
+          <div className="page-eyebrow">{labels.eyebrow}</div>
+          <h1 className="page-title">{labels.title}</h1>
+          <p className="page-subtitle">{labels.subtitle}</p>
         </div>
-        <div className="sort-chip">Folders: {folders.length}</div>
+        <div className="sort-chip">{labels.sortCount}: {folders.length}</div>
       </section>
 
       <section className="section-shell">
         {!user && !isLoading ? (
           <p className="status status-muted">
-            You need to <Link href={localizeHref(locale, "/login")}>log in</Link> before using folders.
+            {labels.loginRequired} <Link href={localizeHref(locale, "/login")}>{labels.loginLink}</Link> {labels.loginSuffix}
           </p>
         ) : null}
 
         <form className="stack-md panel" onSubmit={handleCreateFolder}>
-          <h2 className="display-title">Create New Folder</h2>
-          <p className="page-intro">Name your collection and start organizing saved recipes.</p>
+          <h2 className="display-title">{labels.createTitle}</h2>
+          <p className="page-intro">{labels.createIntro}</p>
           <label className="field">
-            <span>Folder name</span>
+            <span>{labels.folderName}</span>
             <input
               type="text"
               value={name}
               onChange={(event) => setName(event.target.value)}
-              placeholder="Ramadan Recipes"
+              placeholder={labels.folderNamePlaceholder}
               required
             />
           </label>
 
           <label className="field">
-            <span>Description</span>
+            <span>{labels.description}</span>
             <textarea
               value={description}
               onChange={(event) => setDescription(event.target.value)}
-              placeholder="Optional notes for this folder"
+              placeholder={labels.descriptionPlaceholder}
               rows={3}
             />
           </label>
@@ -119,18 +120,18 @@ export default function FoldersPage({ locale = "en" }) {
           {successMessage ? <p className="status status-success">{successMessage}</p> : null}
 
           <button type="submit" className="button" disabled={isSubmitting || !user}>
-            {isSubmitting ? "Creating..." : "Create Folder"}
+            {isSubmitting ? labels.creating : labels.createAction}
           </button>
         </form>
 
         <div className="section-header">
-          <h2 className="section-title display-title">Folder Grid</h2>
+          <h2 className="section-title display-title">{labels.gridTitle}</h2>
         </div>
 
-        {isLoading ? <p className="status status-muted">Loading folders...</p> : null}
+        {isLoading ? <p className="status status-muted">{labels.loading}</p> : null}
 
         {!isLoading && user && folders.length === 0 ? (
-          <p className="status status-muted">No folders yet.</p>
+          <p className="status status-muted">{labels.empty}</p>
         ) : null}
 
         <div className="cat-grid cat-grid-large">
@@ -145,7 +146,7 @@ export default function FoldersPage({ locale = "en" }) {
                 </div>
                 <div className="folder-info">
                   <div className="folder-name">{folder.name}</div>
-                  <div className="folder-count">{folder.description || "Open folder"}</div>
+                  <div className="folder-count">{folder.description || labels.openFolder}</div>
                 </div>
               </Link>
               <div className="folder-info">
@@ -154,7 +155,7 @@ export default function FoldersPage({ locale = "en" }) {
                   className="btn-ghost"
                   onClick={() => handleDeleteFolder(folder.id)}
                 >
-                  Delete
+                  {labels.delete}
                 </button>
               </div>
             </article>
