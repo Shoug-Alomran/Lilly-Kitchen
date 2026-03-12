@@ -1910,6 +1910,14 @@ textarea {
   .ig-track {
     animation-duration: 16s;
   }
+
+  .ig-track-group {
+    gap: 10px;
+  }
+
+  .ig-tile {
+    flex-basis: min(220px, 34vw);
+  }
 }
 
 @media (max-width: 800px) {
@@ -2005,6 +2013,25 @@ textarea {
 
   .ig-track {
     animation-duration: 12s;
+  }
+
+  .ig-track-group {
+    gap: 8px;
+  }
+
+  .ig-tile {
+    flex-basis: min(250px, 68vw);
+    border-radius: 16px;
+  }
+
+  .ig-handle {
+    font-size: 26px;
+  }
+
+  .ig-sub {
+    max-width: 26ch;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .account-summary__identity {
@@ -2140,5 +2167,19 @@ textarea {
 
   .hero-scroll {
     display: none;
+  }
+
+  .ig-marquee {
+    padding-bottom: 8px;
+  }
+
+  .ig-tile {
+    flex-basis: 74vw;
+  }
+
+  .ig-overlay {
+    left: 10px;
+    bottom: 10px;
+    padding: 7px 10px;
   }
 }

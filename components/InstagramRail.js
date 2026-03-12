@@ -1,5 +1,4 @@
 export default function InstagramRail({ items }) {
-  const sequenceItems = [...items, ...items];
   const loopCopies = [0, 1];
 
   return (
@@ -11,7 +10,7 @@ export default function InstagramRail({ items }) {
             className="ig-track-group"
             aria-hidden={copyIndex > 0 ? "true" : undefined}
           >
-            {sequenceItems.map((item, itemIndex) => (
+            {items.map((item, itemIndex) => (
               <a
                 key={`${item.id}-${copyIndex}-${itemIndex}`}
                 className="ig-tile"
