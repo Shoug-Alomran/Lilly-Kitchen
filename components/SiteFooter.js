@@ -47,6 +47,12 @@ export default function SiteFooter() {
           </a>
         </div>
       </div>
+      <div className="footer-bottom">
+        <span>© 2026 Lilly Kitchen</span>
+        <a href="https://blueprint.shoug-tech.com/" target="_blank" rel="noreferrer">
+          Made by Blueprint
+        </a>
+      </div>
     </footer>
   );
 }

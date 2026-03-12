@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -14,6 +15,25 @@ const navItems = [
 
 export default function SiteHeader() {
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("search") || "");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  function handleSearchSubmit(event) {
+    event.preventDefault();
+
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) {
+      router.push("/recipes");
+      setIsSearchOpen(false);
+      return;
+    }
+
+    router.push(`/recipes?search=${encodeURIComponent(trimmedQuery)}`);
+    setIsSearchOpen(false);
+  }
 
   return (
     <header className="site-header">
@@ -35,9 +55,29 @@ export default function SiteHeader() {
         </nav>
 
         <div className="site-header__actions">
-          <Link href="/recipes" className="site-search">
-            Search
-          </Link>
+          <form className={`site-search ${isSearchOpen ? "is-open" : ""}`} onSubmit={handleSearchSubmit}>
+            {isSearchOpen ? (
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search recipes..."
+                aria-label="Search recipes"
+                autoFocus
+              />
+            ) : null}
+            <button
+              type={isSearchOpen ? "submit" : "button"}
+              className="site-search__button"
+              onClick={() => {
+                if (!isSearchOpen) {
+                  setIsSearchOpen(true);
+                }
+              }}
+            >
+              Search
+            </button>
+          </form>
           <Link href="/account" className="site-avatar" aria-label="Account">
             L
           </Link>
