@@ -16,7 +16,10 @@ const dmSans = DM_Sans({
 
 export const metadata = {
   title: "Lilly Kitchen",
-  description: "Minimal scaffold for the Lilly Kitchen web application."
+  description: "Minimal scaffold for the Lilly Kitchen web application.",
+  icons: {
+    icon: "/icon.png"
+  }
 };
 
 export default function RootLayout({ children }) {
